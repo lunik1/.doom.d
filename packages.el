@@ -54,3 +54,4 @@
 (package! form-feed)
 (package! info-colors)
 (package! mixed-pitch)
+(package! vdiff)
