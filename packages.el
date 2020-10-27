@@ -52,5 +52,6 @@
 ;; (package! company-fuzzy)
 (package! flycheck-clojure)
 (package! info-colors)
+(package! magit-delta) ; https://tecosaur.github.io/emacs-config/config.html#magit
 (package! page-break-lines)
 (package! vdiff)
