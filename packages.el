@@ -54,6 +54,7 @@
 (package! info-colors)
 (package! lsp-latex)
 (package! magit-delta) ; https://tecosaur.github.io/emacs-config/config.html#magit
+(package! ox-gfm)
 (package! page-break-lines)
 (package! rotate)
 (package! vdiff)
