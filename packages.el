@@ -52,6 +52,5 @@
 ;; (package! company-fuzzy)
 (package! flycheck-clojure)
 (package! info-colors)
-(package! mixed-pitch)
 (package! page-break-lines)
 (package! vdiff)
