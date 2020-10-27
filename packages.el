@@ -57,3 +57,4 @@
 (package! page-break-lines)
 (package! rotate)
 (package! vdiff)
+(package! visual-fill-column) ; https://github.com/emacs-evil/evil/issues/188
