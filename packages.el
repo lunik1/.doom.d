@@ -55,6 +55,8 @@
 (package! lsp-julia :recipe (:host github :repo "non-jedi/lsp-julia"))
 (package! lsp-latex)
 (package! magit-delta) ; https://tecosaur.github.io/emacs-config/config.html#magit
+(package! org-ref)
+(package! org-roam-bibtex)
 (package! ox-gfm)
 (package! page-break-lines)
 (package! rotate)
