@@ -79,7 +79,8 @@
 
        :checkers
        (syntax +childframe)              ; tasing you for every semicolon you forget
-       (spell (:if (not IS-WINDOWS) +aspell) (:if IS-WINDOWS +hunspell) +everywhere)             ; tasing you for misspelling mispelling
+       (:if (not IS-WINDOWS) (spell +aspell +everywhere))
+       (:if IS-WINDOWS (spell +hunspell +everywhere))
        grammar           ; tasing grammar mistake every you make
 
        :tools
