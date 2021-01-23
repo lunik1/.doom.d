@@ -22,6 +22,8 @@
 - [[#behaviour][Behaviour]]
   - [[#browser][Browser]]
   - [[#completion][Completion]]
+  - [[#eshell][Eshell]]
+    - [[#aliases][Aliases]]
   - [[#lsp][LSP]]
   - [[#magit][Magit]]
   - [[#scrolling][Scrolling]]
@@ -43,6 +45,7 @@
   - [[#evil-1][Evil]]
     - [[#digraphs][Digraphs]]
   - [[#weenie-mode][Weenie mode]]
+- [[#footnotes][Footnotes]]
 
 * Identity
 Set name and email for gpg
@@ -207,7 +210,83 @@ usually used by doom when ~+childframe~ is disabled.
         (company-abort)))))
 
 #+end_src
+** Eshell
+*** Aliases
+Correct for some bad muscle memory
+#+begin_src emacs-lisp :tangle yes
+(set-eshell-alias!
+ "vim" "find-file"
+ "nvim" "find-file"
+ "emacs" "find=file")
+#+end_src
 
+Useful aliases from my ~.zshrc~
+#+begin_src emacs-lisp :tangle yes
+(set-eshell-alias!
+ "pie" "perl -pi -e"
+ "srsync" "rsync -avzPe ssh")
+#+end_src
+
+**** grml aliases and functions
+Add aliases and functions from grml's ~zsh~ config to ~eshell~.
+
+These commands can be (more or less) directly translated:
+#+begin_src emacs-lisp :tangle yes
+(set-eshell-alias!
+ "cdt" "cd ${mktemp -d}; pwd"
+ "da" "du -sch"
+ "dir" "ls -lSrah"
+ "insecscp" "scp -o \"StrictHostKeyChecking=no\" -o \"UserKnownHostsFile=/dev/null\""
+ "l" "ls -l"
+ "la" "ls -la"
+ "lh" "ls -hAl"
+ "ll" "ls -l"
+ "llog" "sudo journalctl -f"
+ "llog" "sudo journalctl"
+ "mkcd" "mkdir -p $1; cd $1" ;; will not inform if dir already exists
+ "rmcdir" "cd ..; *rmdir $- || cd $-") ;; built-in rmdir does not return non-zero
+#+end_src
+
+Other commands rely on ~zsh~'s more advanced globbing capabilities[fn:1] and cannot be
+easily replicated using ~eshell~. Currently unimplemented:
+ + =accessed=
+ + =bk=
+ + =changed=
+ + =cl= (tricky because eshell's cd doesn't seem to return non-zero when you
+   attempt to cd to a non-existent directory)
+ + =trans=
+ + =simple-extract=/=se= (big job)
+ + =modified=
+ + =lad=
+ + =lsa=
+ + =lsbig=
+ + =lsd=
+ + =lse=
+ + =lsl=
+ + =lsnew=
+ + =lsnewdir=
+ + =lsold=
+ + =lsolddir=
+ + =lss=
+ + =lssmall=
+ + =lsw=
+ + =lsx=
+ + =sll=
+
+No need to implement:
+ - =grep=
+ - =grml-version=
+ - =grml-wallpaper=
+ - =hbp=
+ - =hgdi=
+ - =hgstat=
+ - =inplaceMkDirs=
+ - =insecssh=
+ - =llog=
+ - =tlog=
+ - =xtrename=
+ - All the Debian-specific commands
+ - All the global functions (except =sll=)
 ** LSP
 Allow LSP servers to handle indentation an format code when typing
 #+begin_src emacs-lisp :tangle yes
@@ -547,3 +626,12 @@ Add more digraphs
       "w C-S-<up>"    'evil-window-move-very-top
       "w C-S-<down>"  'evil-window-move-very-bottom)
 #+end_src
+
+* Footnotes
+
+[fn:1] ~eshell~ does have some of the globbing functionality needed, namely
+predicates/qualifiers, but globs with qualifiers and no matches in ~eshell~ are
+not left unchanged ([[https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_13_03][the zsh/POSIX behaviour]]) but instead are empty. This is an
+issue when using ~ls~, as ~ls~ with no argument - i.e. when there are no
+matches - will effectively ignore the provided pattern. Note that ~eshell~ globs
+only behave in this manner when a qualifier is provided.
