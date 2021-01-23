@@ -5,6 +5,7 @@
 - [[#identity][Identity]]
 - [[#appearance][Appearance]]
   - [[#doc-view][Doc-view]]
+  - [[#tem][Tem]]
   - [[#evil][Evil]]
   - [[#fill-column-indicator][Fill column indicator]]
   - [[#font][Font]]
@@ -56,6 +57,13 @@ Increase resolution to 300 dpi
 #+begin_src emacs-lisp :tangle yes
 (after! doc-view
   (setq doc-view-resolution 300))
+#+end_src
+** Tem
+hOI
+#+begin_src emacs-lisp :tangle yes
+(setq +doom-dashboard-banner-dir "~/.doom.d/"
+      +doom-dashboard-banner-file "tem.png"
+      +doom-dashboard-banner-padding '(0 . 2))
 #+end_src
 
 ** Evil
