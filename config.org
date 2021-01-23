@@ -40,6 +40,7 @@
     - [[#org-ref][Org ref]]
     - [[#org-roam][Org roam]]
   - [[#python][Python]]
+  - [[#sh][sh]]
 - [[#keybinds][Keybinds]]
   - [[#dired][Dired]]
   - [[#evil-1][Evil]]
@@ -515,6 +516,21 @@ Use the beta version of ~mspyls~
 #+begin_src emacs-lisp :tangle yes
 (after! lsp-python-ms
   (setq lsp-python-ms-nupkg-channel "beta"))
+#+end_src
+
+** sh
+Set indent to 2
+#+begin_src emacs-lisp :tangle yes
+(setq sh-basic-offset 2)
+(add-hook! 'sh-mode-hook
+  (setq-local evil-shift-width sh-basic-offset
+              tab-width sh-basic-offset))
+#+end_src
+
+Make =shfmt= use spaces
+#+begin_src emacs-lisp :tangle yes
+(after! (sh format-all)
+  (set-formatter! 'shfmt "shfmt -i 2"))
 #+end_src
 
 * Keybinds
