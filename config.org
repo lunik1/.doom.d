@@ -114,8 +114,9 @@ Use relative line numbers
 Only apply ~mixed-pitch~ for specific modes rather than all text modes, else we
 end up with mixed pich e.g. ~yaml-mode~
 #+begin_src emacs-lisp :tangle yes
-(add-hook! '(org-mode-hook LaTeX-mode-hook markdown-mode-hook help-mode-hook)
-           #'mixed-pitch-mode)
+;; yaml-mode no longer drives from text-mode, so we'll see how annoying disabling this is
+;; (add-hook! '(org-mode-hook LaTeX-mode-hook markdown-mode-hook help-mode-hook)
+;;            #'mixed-pitch-mode)
 #+end_src
 
 ** Modeline
