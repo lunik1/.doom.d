@@ -61,6 +61,7 @@
 (package! page-break-lines)
 (package! rotate :pin "091b5ac4fc310773253efb317e3dbe8e46959ba6") ; cl-lib version is broken
 (package! vdiff)
+(package! vimrc-mode)
 ;; (package! visual-fill-column) ; https://github.com/emacs-evil/evil/issues/188
 (package! yaml-mode :recipe (:host gitlab :repo "lunik1/yaml-mode")) ; derive yaml-mode from prog-mode
 
