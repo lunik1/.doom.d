@@ -310,11 +310,6 @@ works if we open eshell in a remote dir (e.g. via ~SPC o t~), not if we ssh in.
     (company-mode -1)))
 #+end_src
 ** Keyfreq
-Track command usage
-#+begin_src emacs-lisp :tangle yes
-(keyfreq-mode 1)
-(keyfreq-autosave-mode 1)
-#+end_src
 ** LSP
 Allow LSP servers to handle indentation an format code when typing
 #+begin_src emacs-lisp :tangle yes
