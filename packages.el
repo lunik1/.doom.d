@@ -51,6 +51,7 @@
 
 ;; (package! company-fuzzy)
 (package! flycheck-clojure)
+(package! keyfreq)
 (package! info-colors)
 (package! lsp-julia :recipe (:host github :repo "non-jedi/lsp-julia"))
 (package! lsp-latex)
