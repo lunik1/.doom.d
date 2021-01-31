@@ -1,5 +1,5 @@
-#+TITLE: doom config
-#+STARTUP: nofold
+#+title: doom config
+#+startup: nofold
 
 * Table of Contents :TOC_3:noexport:
 - [[#identity][Identity]]
