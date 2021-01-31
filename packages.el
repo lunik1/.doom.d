@@ -58,6 +58,7 @@
 (package! org-ref)
 (package! org-roam-bibtex)
 (package! ox-gfm)
+(package! ox-rst)
 (package! page-break-lines)
 (package! rotate :pin "091b5ac4fc310773253efb317e3dbe8e46959ba6") ; cl-lib version is broken
 (package! vdiff)

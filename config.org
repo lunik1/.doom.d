@@ -25,6 +25,7 @@
   - [[#completion][Completion]]
   - [[#eshell][Eshell]]
     - [[#aliases][Aliases]]
+    - [[#disable-completion-in-remote-shells][Disable completion in remote shells]]
   - [[#lsp][LSP]]
   - [[#magit][Magit]]
   - [[#scrolling][Scrolling]]
@@ -479,11 +480,13 @@ motions
       :nvm "C-<down>"  'outline-forward-same-level)
 #+end_src
 
-Enable inline tasks and export to GitHub-flavoured markdown
+Enable inline tasks export to GitHub-flavoured markdown, and export to
+reStructuredText.
 #+begin_src emacs-lisp :tangle yes
 (after! org
   (require 'org-inlinetask)
-  (require 'ox-gfm nil t))
+  (require 'ox-gfm nil t)
+  (require 'ox-rst))
 #+end_src
 *** Org ref
 Add ~org-ref~ and use ~ivy~ as much as possible.
