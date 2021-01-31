@@ -523,6 +523,11 @@ Tell ~black~ to use 80-character lines
   (set-formatter! 'black "black -q -l 80 -"))
 #+end_src
 
+Don't use the LSP's formatter (use =black=)
+#+begin_src emacs-lisp :tangle yes
+(setq-hook! 'python-mode-hook +format-with-lsp nil)
+#+end_src
+
 Use the beta version of ~mspyls~
 #+begin_src emacs-lisp :tangle yes
 (after! lsp-python-ms
