@@ -20,6 +20,7 @@
   - [[#treemacs][Treemacs]]
   - [[#misc][Misc.]]
 - [[#behaviour][Behaviour]]
+  - [[#avy][Avy]]
   - [[#browser][Browser]]
   - [[#completion][Completion]]
   - [[#eshell][Eshell]]
@@ -179,6 +180,13 @@ Use unicode ellipsis for truncation
 #+end_src
 
 * Behaviour
+** Avy
+Allow avy to jump between frames
+#+begin_src emacs-lisp :tangle yes
+(setq avy-all-windows t
+      avy-all-windows-alt 'all-frames)
+#+end_src
+
 ** Browser
 When running on WSL, open links in Windows' browser
 #+begin_src emacs-lisp :tangle yes
