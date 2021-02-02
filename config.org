@@ -624,8 +624,10 @@ Create a text quote object so e.g. =diq= deletes inside quotes. Works with ='=,
              ("“" . "”"))))
       (evil-textobj-anyblock--make-textobj beg end type count t)))
 
-  (define-key evil-inner-text-objects-map "q" 'my-evil-textobj-anyblock-inner-quote)
-  (define-key evil-outer-text-objects-map "q" 'my-evil-textobj-anyblock-a-quote))
+  (define-key evil-inner-text-objects-map "q"
+    'my-evil-textobj-anyblock-inner-quote)
+  (define-key evil-outer-text-objects-map "q"
+    'my-evil-textobj-anyblock-a-quote))
 #+end_src
 
 *** Digraphs
