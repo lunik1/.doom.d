@@ -347,7 +347,7 @@ Set scroll margins
 ** Smartparens
 Don't auto-match
 #+begin_src emacs-lisp :tangle yes
-(remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
+;; (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 #+end_src
 
 ** Spellcheck
