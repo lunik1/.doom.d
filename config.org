@@ -565,7 +565,7 @@ Set indent to 2
 
 Make =shfmt= use spaces
 #+begin_src emacs-lisp :tangle yes
-(after! format-all
+(after! (format-all)
   (set-formatter! 'shfmt "shfmt -i 2"))
 #+end_src
 
