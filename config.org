@@ -67,6 +67,7 @@ Increase resolution to 300 dpi
 #+end_src
 ** Tem
 hOI
+[[file:tem.png]]
 #+begin_src emacs-lisp :tangle yes
 (setq +doom-dashboard-banner-dir "~/.doom.d/"
       +doom-dashboard-banner-file "tem.png"
