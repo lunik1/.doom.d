@@ -51,9 +51,9 @@
 
 ;; (package! company-fuzzy)
 (package! flycheck-clojure)
-(package! keyfreq)
 (package! info-colors)
 (package! julia-formatter :recipe (:host github :repo "ki-chi/julia-formatter"))
+(package! keyfreq)
 (package! lsp-julia :recipe (:host github :repo "non-jedi/lsp-julia"))
 (package! lsp-latex)
 (package! magit-delta) ; https://tecosaur.github.io/emacs-config/config.html#magit
