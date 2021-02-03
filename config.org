@@ -40,8 +40,10 @@
   - [[#julia][Julia]]
   - [[#lateχ][LaTeΧ]]
   - [[#org][Org]]
+    - [[#appearance-1][Appearance]]
     - [[#org-ref][Org ref]]
     - [[#org-roam][Org roam]]
+    - [[#exporting][Exporting]]
   - [[#python][Python]]
   - [[#sh][sh]]
 - [[#keybinds][Keybinds]]
@@ -483,43 +485,97 @@ Use ~lsp-latex~ or diagnostics don't work, and use it to build
 #+end_src
 
 ** Org
-Set =org= directory (before =org= loads!)
-#+begin_src emacs-lisp :tangle yes
+:PROPERTIES:
+:CUSTOM_ID: org
+:header-args:emacs-lisp: :tangle no :noweb-ref org-conf
+:END:
+Set =org= directory. Doom's template =config.el= recommends this is done
+/before/ org loads.
+#+begin_src emacs-lisp :tangle yes :noweb-ref nil
 (setq org-directory "~/org/")
 #+end_src
 
+Org mode is a big boy so wrap up all this config in an ~after!~ using noweb
+magic
+#+begin_src emacs-lisp :noweb no-export :tangle yes :noweb-ref nil
+(after! org
+  <<org-conf>>
+)
+#+end_src
+
+Tecosaur has spent much more time in =org-mode= than me, so steal their defaults:
+#+begin_src emacs-lisp
+(setq org-use-property-inheritance t
+      org-log-done 'time ; matches behaviour of orgzly
+      org-list-allow-alphabetical t
+      org-export-in-background t
+      org-re-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
+#+end_src
+
 Allow =TAB= to open full subtrees
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (after! evil-org
   (remove-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h))
 #+end_src
 
 Set =C-k= back to ~evil-insert-digraph~ and add arrow-key equivalents for some
 motions
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (map! :after evil-org
       :map evil-org-mode-map
       :i   "C-k"       'evil-insert-digraph
 
       :nvm "g <left>"  'org-up-element
+      :nvm "g <right>" 'org-down-element
       :nvm "g <up>"    'outline-backward-same-level
-      :nvm "g <down>"  'outline-forward-same-level
+      :nvm "g <down>"  'outline-forward-same-level)
 
-      :nvm "C-<up>"    'outline-backward-same-level
-      :nvm "C-<down>"  'outline-forward-same-level)
+      ;; :nvm "C-<up>"    'outline-backward-same-level
+      ;; :nvm "C-<down>"  'outline-forward-same-level)
 #+end_src
 
-Enable inline tasks export to GitHub-flavoured markdown, and export to
-reStructuredText.
-#+begin_src emacs-lisp :tangle yes
-(after! org
-  (require 'org-inlinetask)
-  (require 'ox-gfm nil t)
-  (require 'ox-rst))
+Enable inline tasks
+#+begin_src emacs-lisp
+(require 'org-inlinetask)
 #+end_src
+
+Using =pandoc= as an intermediary, non-org files can be edited in org!
+#+begin_src emacs-lisp
+(use-package! org-pandoc-import)
+#+end_src
+
+*** Appearance
+#+begin_src emacs-lisp
+(add-hook! 'org-mode-hook #'+org-pretty-mode)
+#+end_src
+
+=▾= is a more common indicator for a collapsed section
+#+begin_src emacs-lisp
+(setq org-ellipsis " ▾ ")
+#+end_src
+
+=org-appear= allows *,/,=,~ etc. to only be shown when under the cursor
+#+begin_src emacs-lisp
+(use-package! org-appear
+  :hook (org-mode . org-appear-mode)
+  :config
+  (setq org-appear-autoemphasis t
+        org-appear-autosubmarkers t
+        org-appear-autolinks t)
+  ;; for proper first-time setup, `org-appear--set-fragments'
+  ;; needs to be run after other hooks have acted.
+  (run-at-time nil nil #'org-appear--set-fragments))
+#+end_src
+
+…and we can get similar behaviour for inline \(\LaTeX\) with =org-fragtog=
+#+begin_src emacs-lisp
+(use-package! org-fragtog
+  :hook (org-mode . org-fragtog-mode))
+#+end_src
+
 *** Org ref
 Add ~org-ref~ and use ~ivy~ as much as possible.
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package! org-ref
   :after org
   :config
@@ -532,18 +588,31 @@ Add ~org-ref~ and use ~ivy~ as much as possible.
 
 *** Org roam
 Don't get titles from the headline and encrypt files
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (after! org-roam
   (setq org-roam-title-sources '(title alias)
         org-roam-encrypt-files t))
 #+end_src
 
 Integrate with ~org-ref~
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package! org-roam-bibtex
   :after (org-roam org-ref))
 #+end_src
 
+*** Exporting
+Add some useful backends not included by default
+#+begin_src emacs-lisp
+(require 'ox-gfm nil t)
+(require 'ox-rst)
+#+end_src
+
+**** LaTeX
+***** Beamer
+Metropolis is the only nice Beamer theme, so make it the default
+#+begin_src emacs-lisp
+;; (setq org-beamer-theme "[progressbar=foot]metropolis")
+#+end_src
 
 ** Python
 Tell ~black~ to use 80-character lines
