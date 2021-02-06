@@ -11,6 +11,7 @@
   - [[#font][Font]]
   - [[#gutter][Gutter]]
   - [[#info-colors][~info-colors~]]
+  - [[#ligatures][Ligatures]]
   - [[#line-numbers][Line numbers]]
   - [[#mixed-pitch][Mixed pitch]]
   - [[#modeline][Modeline]]
@@ -121,6 +122,19 @@ Extra highlighting for info-mode
 (use-package! info-colors
   :after info
   :hook (Info-selection . info-colors-fontify-mode))
+#+end_src
+
+** Ligatures
+I'm generally not a big fan of ligatures, but they do look nice in =org-mode= so
+let's keep only the =org-mode= ligatures:
+#+begin_src emacs-lisp :tangle yes
+(plist-put! +ligatures-extra-symbols
+  ;; org
+  :name          "»"
+  :src_block     "›"
+  :src_block_end ""
+  :quote         "“"
+  :quote_end     "”")
 #+end_src
 
 ** Line numbers
