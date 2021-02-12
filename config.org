@@ -223,7 +223,7 @@ When running on WSL, open links in Windows' browser
 #+end_src
 
 ** Completion
-Trigger completion ASAP and after typing only one character and apply a fix for
+Trigger completion ASAP and after typing only one character. Apply a fix for
 company menu sometimes staying open when entering normal state. This shouldn't
 happen with ~company-box~, but it does on python files so just re-add the hook
 usually used by doom when ~+childframe~ is disabled.
