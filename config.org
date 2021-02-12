@@ -132,7 +132,7 @@ let's keep only the =org-mode= ligatures:
   ;; org
   :name          "»"
   :src_block     "›"
-  :src_block_end ""
+  :src_block_end "‹"
   :quote         "“"
   :quote_end     "”")
 #+end_src
