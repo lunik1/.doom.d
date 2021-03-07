@@ -51,6 +51,7 @@
   - [[#dired][Dired]]
   - [[#evil-1][Evil]]
     - [[#digraphs][Digraphs]]
+  - [[#window-management][Window management]]
   - [[#weenie-mode][Weenie mode]]
 - [[#footnotes][Footnotes]]
 
@@ -751,6 +752,15 @@ Add more digraphs
                                    ((?< ?|) . ?↤)
                                    ((?/ ?E) . ?∄)
                                    ((?h ?-) . ?ℏ))))
+#+end_src
+
+** Window management
+This is like ~tear-off-window~, but preserves the window in the current frame
+#+begin_src emacs-lisp :tangle yes
+(map! :prefix "C-w"
+      :nv "f" 'make-frame-command)
+(map! :leader
+      "w f"   'make-frame-command)
 #+end_src
 
 ** Weenie mode
