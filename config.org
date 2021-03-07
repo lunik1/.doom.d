@@ -177,6 +177,12 @@ Use ~all-the-icons~
   (add-hook 'ranger-mode-hook 'all-the-icons-dired-mode))
 #+end_src
 
+Often when I open =deer= I immediately switch to =ranger=, so add binding to open
+=ranger= directly.
+#+begin_src emacs-lisp :tangle yes
+(map! :leader
+      "o _" 'ranger)
+#+end_src
 ** Theme
 Gruvbox is best theme (but doom-vibrant is nice too)
 #+begin_src emacs-lisp :tangle yes
