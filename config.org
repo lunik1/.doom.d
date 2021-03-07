@@ -95,8 +95,8 @@ Disable by default
 ** Font
 Use Iosevka family
 #+begin_src emacs-lisp :tangle yes
- (setq doom-font (font-spec :family "BFF" :size 14)
-       doom-unicode-font doom-font
+ (setq doom-font (font-spec :family "Myosevka" :size 14)
+       doom-unicode-font (font-spec :family "Julia Mono")
        doom-variable-pitch-font (font-spec :family "Iosevka Etoile" :size 14)
        doom-serif-font (font-spec :family "Iosevka Etoile" :size 14))
 #+end_src
