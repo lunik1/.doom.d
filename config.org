@@ -128,7 +128,8 @@ Extra highlighting for info-mode
 I'm generally not a big fan of ligatures, but they do look nice in =org-mode= so
 let's keep only the =org-mode= ligatures:
 #+begin_src emacs-lisp :tangle yes
-(setq +ligatures-extras-in-modes '(org-mode))
+(setq +ligatures-in-modes '(org-mode)
+      +ligatures-extras-in-modes '(org-mode))
 
 (setq +ligatures-extra-symbols
       '(;; org
