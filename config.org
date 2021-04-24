@@ -428,12 +428,6 @@ Use ~flycheck-clojure~ for more thorough linting (~eastwood~ and ~kibit~)
   (flycheck-clojure-setup)) ; must be run after cider
 #+end_src
 
-Use ~cljr-refactor~ to rename variables, rather than LSP
-#+begin_src emacs-lisp :tangle yes
-(map! :map clojure-mode-map
-      [remap lsp-rename] #'cljr-rename-symbol)
-#+end_src
-
 Don't warn about operations that need to build the AST
 #+begin_src emacs-lisp :tangle yes
 (after! clj-refactor
