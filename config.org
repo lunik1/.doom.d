@@ -247,8 +247,21 @@ usually used by doom when ~+childframe~ is disabled.
     (defun +company-abort-h ()
       (when company-candidates
         (company-abort)))))
-
 #+end_src
+
+** Docker
+Adding yourself to the =docker+ group is generally a bad idea, from the Docker manual:
+#+begin_quote
+Warning
+
+The docker group grants privileges equivalent to the =root= user.
+#+end_quote
+so we need to tell =docker.el= to run Docker as root
+#+begin_src emacs-lisp :tangle yes
+(after! docker
+  (setq docker-run-as-root t))
+#+end_src
+
 ** Eshell
 *** Aliases
 Correct for some bad muscle memory
