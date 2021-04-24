@@ -93,12 +93,12 @@ Disable by default
 #+end_src
 
 ** Font
-Use Iosevka family
+Use Myosevka family
 #+begin_src emacs-lisp :tangle yes
  (setq doom-font (font-spec :family "Myosevka" :size 14)
        doom-unicode-font (font-spec :family "Julia Mono")
-       doom-variable-pitch-font (font-spec :family "Iosevka Etoile" :size 14)
-       doom-serif-font (font-spec :family "Iosevka Etoile" :size 14))
+       doom-variable-pitch-font (font-spec :family "Myosevka Etoile" :size 14)
+       doom-serif-font (font-spec :family "Myosevka Etoile" :size 14))
 #+end_src
 and set commands and keywords in /italics/.
 #+begin_src emacs-lisp :tangle yes
@@ -594,14 +594,14 @@ Using =pandoc= as an intermediary, non-org files can be edited in org!
 Set outline in sans serif
 #+begin_src emacs-lisp
 (custom-set-faces!
-  '(outline-1 :family "Iosevka Aile")
-  '(outline-2 :family "Iosevka Aile")
-  '(outline-3 :family "Iosevka Aile")
-  '(outline-4 :family "Iosevka Aile")
-  '(outline-5 :family "Iosevka Aile")
-  '(outline-6 :family "Iosevka Aile")
-  '(outline-8 :family "Iosevka Aile")
-  '(outline-9 :family "Iosevka Aile"))
+  '(outline-1 :family "Myosevka Aile")
+  '(outline-2 :family "Myosevka Aile")
+  '(outline-3 :family "Myosevka Aile")
+  '(outline-4 :family "Myosevka Aile")
+  '(outline-5 :family "Myosevka Aile")
+  '(outline-6 :family "Myosevka Aile")
+  '(outline-8 :family "Myosevka Aile")
+  '(outline-9 :family "Myosevka Aile"))
 #+end_src
 
 *** Org ref
