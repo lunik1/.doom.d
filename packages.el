@@ -69,6 +69,7 @@
 (package! ox-rst)
 (package! page-break-lines)
 (package! rotate)
+(package! screenshot :recipe (:host github :repo "tecosaur/screenshot"))
 (package! vdiff)
 (package! vimrc-mode)
 ;; (package! visual-fill-column) ; https://github.com/emacs-evil/evil/issues/188
