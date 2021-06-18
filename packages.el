@@ -75,4 +75,6 @@
 ;; (package! visual-fill-column) ; https://github.com/emacs-evil/evil/issues/188
 (package! yaml-mode :recipe (:host gitlab :repo "lunik1/yaml-mode")) ; derive yaml-mode from prog-mode
 
+(package! pdf-tools :built-in 'prefer)
+
 (unpin! yaml-mode)
