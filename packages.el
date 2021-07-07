@@ -68,6 +68,7 @@
 (package! ox-gfm)
 (package! ox-rst)
 (package! page-break-lines)
+(package! pinentry)
 (package! rotate)
 (package! screenshot :recipe (:host github :repo "tecosaur/screenshot"))
 (package! vdiff)

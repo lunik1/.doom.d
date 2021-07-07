@@ -24,12 +24,14 @@
   - [[#avy][Avy]]
   - [[#browser][Browser]]
   - [[#completion][Completion]]
+  - [[#docker][Docker]]
   - [[#eshell][Eshell]]
     - [[#aliases][Aliases]]
     - [[#disable-completion-in-remote-shells][Disable completion in remote shells]]
   - [[#keyfreq][Keyfreq]]
   - [[#lsp][LSP]]
   - [[#magit][Magit]]
+  - [[#pinentry][Pinentry]]
   - [[#scrolling][Scrolling]]
   - [[#smartparens][Smartparens]]
   - [[#spellcheck][Spellcheck]]
@@ -374,6 +376,12 @@ Use ~magit-delta~ for better diffs (requires ~delta~ to be installed)
 
 (after! magit
   (magit-delta-mode +1))
+#+end_src
+
+** Pinentry
+#+begin_src emacs-lisp :tangle yes
+(use-package! pinentry
+        :init (pinentry-start))
 #+end_src
 
 ** Scrolling
