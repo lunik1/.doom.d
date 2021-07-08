@@ -472,14 +472,6 @@ LSP fix
     (setq-local lsp-enable-folding t)))
 #+end_src
 
-Set up formatting. Julia code cannot currently be formatted by Doom and
-~format-all~, so use ~julia-formatter~ instead.
-#+begin_src emacs-lisp :tangle yes
-(use-package! julia-formatter
-  :when (featurep! :lang julia)
-  :hook (julia-mode . (lambda() (julia-formatter-server-start))))
-#+end_src
-
 ** LaTeΧ
 Render scripts and subscripts at full size, and set =\item= indent
 #+begin_src emacs-lisp :tangle yes
