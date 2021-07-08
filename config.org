@@ -406,6 +406,13 @@ Set spelling and langtool language to British English
 #+end_src
 
 ** TRAMP
+Set TRAMP's terminal tpye to "tramp" so we can set specific config for it in
+shell rc files by checking ~$TERM~.
+#+begin_src emacs-lisp :tangle yes
+(after! tramp
+ (setq tramp-terminal-type "tramp"))
+#+end_src
+
 Set up ~root~ access on remote machines
 #+begin_src emacs-lisp :tangle yes
 (after! tramp
