@@ -420,6 +420,15 @@ Set up ~root~ access on remote machines
                '("^dionysus2$" "^root$" "/ssh:corin@dionysus2:")))
 #+end_src
 
+Many of the machines I access use ~home-manager~, which keeps binaries
+=~/.nix-profile/bin=. Ensure that TRAMP can find and use these, including
+binaries in any other extra locations specified on the host's ~$PATH@, by
+adding ~tramp-own-remote-path~ to ~tramp-remote-path~.
+#+begin_src emacs-lisp :tangle yes
+(after! tramp
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+#+end_src
+
 ** Misc.
 Set tab width to 4
 #+begin_src emacs-lisp :tangle yes
