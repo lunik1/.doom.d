@@ -95,7 +95,7 @@
        ;;gist              ; interacting with github gists
        (lookup +dictionary)              ; navigate your code and its documentation
        (lsp + peek)
-       (magit +forge)             ; a git porcelain for Emacs
+       magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        (:if (not IS-WINDOWS) pdf)               ; pdf enhancements
