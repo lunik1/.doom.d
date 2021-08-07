@@ -62,7 +62,6 @@
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
-(package! org-ref)
 (package! org-roam-bibtex)
 (package! ox-gfm)
 (package! ox-rst)
