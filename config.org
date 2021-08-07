@@ -671,10 +671,21 @@ Don't use the LSP's formatter (use =black=)
 (setq-hook! 'python-mode-hook +format-with-lsp nil)
 #+end_src
 
-Use the beta version of ~mspyls~
+Pyright's linting isn't very extensive, so enable some additional linters. When
+using lsp-mode, this requires chaining the checkers to the ~lsp~ checker; more
+discussion is in [[https://github.com/hlissner/doom-emacs/issues/1530][this issue]]. We will also explicitly disable ~mypy~, as it is redundant
+with pyright.
 #+begin_src emacs-lisp :tangle yes
-(after! lsp-python-ms
-  (setq lsp-python-ms-nupkg-channel "beta"))
+(add-hook! 'lsp-after-initialize-hook
+  (run-hooks (intern (format "%s-lsp-hook" major-mode))))
+
+(defun python-flycheck-setup ()
+  (flycheck-add-next-checker 'lsp 'python-flake8)
+  (flycheck-add-next-checker 'lsp 'python-pylint)
+  (flycheck-add-next-checker 'lsp 'python-pycompile)
+  (add-to-list 'flycheck-disabled-checkers 'python-mypy))
+(add-hook 'python-mode-lsp-hook
+          #'python-flycheck-setup)
 #+end_src
 
 ** sh
