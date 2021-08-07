@@ -23,8 +23,8 @@
        (company +childframe)           ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
-       (ivy +icons +fuzzy)               ; a search engine for love and life ;; idiom for processing a list of files in dired's marked files
-
+       ;; (ivy +icons +fuzzy)               ; a search engine for love and life ;; idiom for processing a list of files in dired's marked files
+       (vertico +icons)
 
        :ui
        ;;deft              ; notational velocity for Emacs
