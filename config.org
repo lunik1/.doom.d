@@ -38,6 +38,7 @@
   - [[#tramp][TRAMP]]
   - [[#misc-1][Misc.]]
 - [[#major-modes][Major Modes]]
+  - [[#beancount][Beancount]]
   - [[#c][C++]]
   - [[#clojure][Clojure]]
   - [[#julia][Julia]]
@@ -444,6 +445,12 @@ Cache ~gpg~ passphrase
 (setq epa-file-cache-passphrase-for-symmetric-encryption t)
 #+end_src
 * Major Modes
+** Beancount
+Use ~bean-format~ to format =.beancount= files
+#+begin_src emacs-lisp :tangle yes
+(after! (beancount format-all)
+  (set-formatter! 'bean-format "bean-format" :modes 'beancount-mode))
+#+end_src
 ** C++
 Use BSD-style indentation with a tab width of 4
 #+begin_src emacs-lisp :tangle yes
