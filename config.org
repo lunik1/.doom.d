@@ -563,6 +563,8 @@ Tecosaur has spent much more time in =org-mode= than me, so steal their defaults
       org-list-allow-alphabetical t
       org-export-in-background t
       org-latex-pdf-process '("latexmk -f -pdf -%latex -shell-escape -interaction=nonstopmode -output-directory=%o %f")
+      org-latex-listings 'minted
+      org-latex-packages-alist '(("cache=false" "minted"))
       org-re-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
 #+end_src
 
