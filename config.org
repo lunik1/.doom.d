@@ -673,7 +673,7 @@ Metropolis is the only nice Beamer theme, so make it the default
 Tell ~black~ to use 80-character lines
 #+begin_src emacs-lisp :tangle yes
 (after! (python format-all)
-  (set-formatter! 'black "black -q -l 80 -"))
+  (set-formatter! 'black "black -q -l 79 -"))
 #+end_src
 
 Don't use the LSP's formatter (use =black=)
