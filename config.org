@@ -269,9 +269,10 @@ so we need to tell =docker.el= to run Docker as root
 Correct for some bad muscle memory
 #+begin_src emacs-lisp :tangle yes
 (set-eshell-alias!
+ "vi" "find-file"
  "vim" "find-file"
  "nvim" "find-file"
- "emacs" "find=file")
+ "emacs" "find-file")
 #+end_src
 
 Useful aliases from my ~.zshrc~
