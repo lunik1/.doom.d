@@ -53,10 +53,8 @@
 (package! flycheck-clojure)
 (package! info-colors)
 (package! keyfreq)
-(package! lsp-julia :recipe (:host github :repo "non-jedi/lsp-julia"))
 (package! lsp-latex)
 (package! magit-delta) ; https://tecosaur.github.io/emacs-config/config.html#magit
-(package! org-appear :recipe (:host github :repo "awth13/org-appear"))
 (package! org-fragtog)
 (package! org-pandoc-import
   :recipe (:host github
