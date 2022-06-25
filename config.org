@@ -196,7 +196,7 @@ Gruvbox is best theme (but doom-vibrant is nice too)
 ** Treemacs
 Use ~all-the-icons~ in ~treemacs~
 #+begin_src emacs-lisp :tangle yes
-(after! doom-emacs
+(after! treemacs
   (setq doom-themes-treemacs-theme "doom-colors"))
 #+end_src
 
