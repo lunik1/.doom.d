@@ -33,7 +33,6 @@
   - [[#magit][Magit]]
   - [[#pinentry][Pinentry]]
   - [[#scrolling][Scrolling]]
-  - [[#smartparens][Smartparens]]
   - [[#spellcheck][Spellcheck]]
   - [[#tramp][TRAMP]]
   - [[#misc-1][Misc.]]
@@ -392,12 +391,6 @@ Set scroll margins
 (setq scroll-margin 5
       hscroll-margin 10
       display-line-numbers-type 'relative)
-#+end_src
-
-** Smartparens
-Don't auto-match
-#+begin_src emacs-lisp :tangle yes
-;; (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 #+end_src
 
 ** Spellcheck
