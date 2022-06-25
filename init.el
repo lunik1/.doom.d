@@ -33,7 +33,7 @@
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        fill-column       ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
-       hydra
+       ;; hydra
        indent-guides     ; highlighted indent columns
        (ligatures +extra)         ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
@@ -68,13 +68,13 @@
        :emacs
        (dired +ranger +icons)             ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
-       (ibuffer +icons)         ; interactive buffer management
+       ;; (ibuffer +icons)         ; interactive buffer management
        (undo +tree)            ; persistent, smarter undo for your inevitable mistakes
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
        eshell            ; the elisp shell that works everywhere
-       shell             ; simple shell REPL for Emacs
+       ;; shell             ; simple shell REPL for Emacs
        (:if (not IS-WINDOWS) vterm)             ; the best terminal emulation in Emacs
 
        :checkers
@@ -93,7 +93,7 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
-       (lookup +dictionary)              ; navigate your code and its documentation
+       ;; (lookup +dictionary)              ; navigate your code and its documentation
        (lsp + peek)
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
