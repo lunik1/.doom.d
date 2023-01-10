@@ -35,6 +35,7 @@
   - [[#scrolling][Scrolling]]
   - [[#spellcheck][Spellcheck]]
   - [[#tramp][TRAMP]]
+  - [[#vterm][Vterm]]
   - [[#misc-1][Misc.]]
 - [[#major-modes][Major Modes]]
   - [[#beancount][Beancount]]
@@ -422,6 +423,23 @@ adding ~tramp-own-remote-path~ to ~tramp-remote-path.
 #+begin_src emacs-lisp :tangle yes
 (after! tramp
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+#+end_src
+
+** Vterm
+Integration with the system shell and emacs can be improved by passing commands from vterm to emacs via escape sequences. The functions vterm can access in this way must be whitelisted.
+#+begin_src emacs-lisp :tangle yes
+(after! vterm
+  (setf (alist-get "woman" vterm-eval-cmds nil nil #'equal)
+        '((lambda (topic)
+            (woman topic))))
+  (setf (alist-get "ranger" vterm-eval-cmds nil nil #'equal)
+        '((lambda (dir)
+            (message "test poop")
+            (message dir)
+            (ranger dir))))
+  (setf (alist-get "dired" vterm-eval-cmds nil nil #'equal)
+        '((lambda (dir)
+            (dired dir)))))
 #+end_src
 
 ** Misc.
