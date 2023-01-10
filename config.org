@@ -377,7 +377,12 @@ Use ~magit-delta~ for better diffs (requires ~delta~ to be installed)
   :after magit)
 
 (after! magit
-  (magit-delta-mode +1))
+  (magit-delta-mode +1)
+  (setq magit-delta-delta-args
+        '("--24-bit-color" "always"
+          "--features" "magit-delta"
+          "--color-only"))
+  )
 #+end_src
 
 ** Pinentry
