@@ -72,6 +72,8 @@
 
 (package! pdf-tools :built-in 'prefer)
 
+(package! jinja2-mode :pin "03e5430a7efe1d163a16beaf3c82c5fd2c2caee1  ")
+
 (unpin! yaml-mode)
 
 (package! straight :pin "3eca39d")
