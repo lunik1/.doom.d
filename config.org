@@ -49,6 +49,7 @@
     - [[#exporting][Exporting]]
   - [[#python][Python]]
   - [[#sh][sh]]
+- [[#toml][TOML]]
 - [[#keybinds][Keybinds]]
   - [[#dired][Dired]]
   - [[#evil-1][Evil]]
@@ -729,6 +730,13 @@ Make =shfmt= use spaces
 #+begin_src emacs-lisp :tangle yes
 (after! (format-all)
   (set-formatter! 'shfmt "shfmt -i 2"))
+#+end_src
+
+* TOML
+Use =taplo= to format TOML files
+#+begin_src emacs-lisp :tangle yes
+(after! (format-all)
+  (set-formatter! 'taplo "taplo fmt -" :modes 'conf-toml-mode))
 #+end_src
 
 * Keybinds
