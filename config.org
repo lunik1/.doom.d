@@ -579,7 +579,7 @@ Tecosaur has spent much more time in =org-mode= than me, so steal their defaults
 (setq org-use-property-inheritance t
       org-log-done 'time ; matches behaviour of orgzly
       org-list-allow-alphabetical t
-      org-export-in-background t
+      org-export-in-background nil
       org-latex-pdf-process '("latexmk -f -pdf -%latex -shell-escape -interaction=nonstopmode -output-directory=%o %f")
       org-latex-listings 'minted
       org-latex-packages-alist '(("cache=false" "minted"))
