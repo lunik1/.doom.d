@@ -670,6 +670,15 @@ Add some useful backends not included by default
 (require 'ox-rst)
 #+end_src
 
+By default, ~org-export-smart-quotes-alist~ does not contain an entry for =en-gb=,
+so create one copying =en='s value.
+#+begin_src emacs-lisp
+(after! ox
+  (setq org-export-smart-quotes-alist
+        (cons (cons "en-gb" (cdr (assoc "en" org-export-smart-quotes-alist)))
+              org-export-smart-quotes-alist)))
+#+end_src
+
 **** LaTeX
 ***** Beamer
 Metropolis is the only nice Beamer theme, so make it the default
