@@ -545,17 +545,6 @@ Make fill (=gwip=/=gqip=) use ~LaTeX-fill-region~ so indents are respected
     #'evil-LaTeX-fill-and-move))
 #+end_src
 
-Use ~lsp-latex~ or diagnostics don't work, and use it to build
-#+begin_src emacs-lisp :tangle yes
-(use-package! lsp-latex
-  :when (and (featurep! :tools lsp) (featurep! :lang latex))
-  ;; :after lsp
-  :config
-  (setq lsp-latex-lint-on-save t)
-  (map! :map LaTeX-mode-map
-        [remap compile] #'lsp-latex-build))
-#+end_src
-
 ** Org
 :PROPERTIES:
 :CUSTOM_ID: org

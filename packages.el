@@ -53,7 +53,6 @@
 (package! flycheck-clojure)
 (package! info-colors)
 (package! keyfreq)
-(package! lsp-latex)
 (package! magit-delta) ; https://tecosaur.github.io/emacs-config/config.html#magit
 (package! org-fragtog)
 (package! org-pandoc-import
