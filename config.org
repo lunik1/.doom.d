@@ -586,6 +586,23 @@ Tecosaur has spent much more time in =org-mode= than me, so steal their defaults
       org-re-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
 #+end_src
 
+Use Luatex for inline latex previews so we can have unicode support
+#+begin_src emacs-lisp
+(unless (assq 'luadvisvg org-preview-latex-process-alist)
+  (setq org-preview-latex-process-alist
+        (cl-acons 'luaimagemagick
+                  '(:programs ("lualatex" "convert")
+                    :description "pdf > png (via lualatex)"
+                    :message "you need to install the programs: lualatex and imagemagick."
+                    :image-input-type "pdf"
+                    :image-output-type "png"
+                    :image-size-adjust (1.0 . 1.0)
+                    :latex-compiler ("lualatex -interaction nonstopmode -output-directory %o %f")
+                    :image-converter ("convert -density %D -trim -antialias %f -quality 100 %O"))
+                  org-preview-latex-process-alist)
+        org-preview-latex-default-process 'luaimagemagick))
+#+end_src
+
 Allow =TAB= to open full subtrees
 #+begin_src emacs-lisp
 (after! evil-org
