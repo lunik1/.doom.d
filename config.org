@@ -496,6 +496,15 @@ Don't warn about operations that need to build the AST
   (setq cljr-warn-on-eval nil))
 #+end_src
 
+Don't use the lsp's formatter, prefer zprint
+#+begin_src emacs-lisp :tangle yes
+(after! (clojure-mode format-all)
+  (set-formatter! 'zprint '("zprint" "{:search-config? true}")
+    :modes '(clojure-mode)))
+(after! (clojure-mode lsp-mode)
+  (setq-hook! 'clojure-mode-hook +format-with-lsp nil))
+#+end_src
+
 ** Julia
 LSP fix
 #+begin_src emacs-lisp :tangle yes
