@@ -678,6 +678,7 @@ Add some useful backends not included by default
 #+begin_src emacs-lisp
 (require 'ox-gfm nil t)
 (require 'ox-rst)
+(require 'ox-koma-letter)
 #+end_src
 
 By default, ~org-export-smart-quotes-alist~ does not contain an entry for =en-gb=,
