@@ -567,6 +567,7 @@ magic
 Tecosaur has spent much more time in =org-mode= than me, so steal their defaults:
 #+begin_src emacs-lisp
 (setq org-use-property-inheritance t
+      org-pretty-entities nil
       org-log-done 'time ; matches behaviour of orgzly
       org-list-allow-alphabetical t
       org-export-in-background nil
