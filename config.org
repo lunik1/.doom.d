@@ -43,6 +43,7 @@
   - [[#clojure][Clojure]]
   - [[#julia][Julia]]
   - [[#lateχ][LaTeΧ]]
+  - [[#nix][Nix]]
   - [[#org][Org]]
     - [[#appearance-1][Appearance]]
     - [[#org-roam][Org roam]]
@@ -553,6 +554,13 @@ Make fill (=gwip=/=gqip=) use ~LaTeX-fill-region~ so indents are respected
     #'evil-LaTeX-fill)
   (evil-define-key 'normal LaTeX-mode-map "gq"
     #'evil-LaTeX-fill-and-move))
+#+end_src
+
+** Nix
+Technically nix-mode only supports ~nixfmt~, but we can get around this by using lies.
+#+begin_src emacs-lisp :tangle yes
+(after! nix-mode
+  (setq nix-nixfmt-bin "nixpkgs-fmt"))
 #+end_src
 
 ** Org
