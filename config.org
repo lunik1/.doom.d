@@ -404,6 +404,7 @@ Set scroll margins
 Set spelling and langtool language to British English
 #+begin_src emacs-lisp :tangle yes
 (setq ispell-dictionary "en_GB"
+      ispell-personal-dictionary "~/.aspell.en_GB.pws"
       langtool-default-language "en-GB")
 #+end_src
 
