@@ -150,15 +150,16 @@
 
 
 ;;; Ligatures
-(setf +ligatures-in-modes '(org-mode)
-      +ligatures-extras-in-modes '(org-mode)
-      +ligatures-extra-symbols
-      '(;; org
-        :name          "»"
-        :src_block     "›"
-        :src_block_end "‹"
-        :quote         "“"
-        :quote_end     "”"))
+(when (modulep! ligatures)
+  (setf +ligatures-in-modes '(org-mode)
+        +ligatures-extras-in-modes '(org-mode)
+        +ligatures-extra-symbols
+        '(;; org
+          :name          "»"
+          :src_block     "›"
+          :src_block_end "‹"
+          :quote         "“"
+          :quote_end     "”")))
 
 
 
@@ -249,8 +250,9 @@
 
 
 ;;; avy
-(setf avy-all-windows t
-      avy-all-windows-alt 'all-frames)
+(after! avy
+  (setf avy-all-windows t
+        avy-all-windows-alt 'all-frames))
 
 
 
@@ -296,8 +298,9 @@
 (after! ranger
   (add-hook 'ranger-mode-hook 'all-the-icons-dired-mode))
 
-(map! :leader
-      "o _" 'ranger)
+(when (modulep! :emacs dired +ranger)
+  (map! :leader
+        "o _" 'ranger))
 
 
 
@@ -308,11 +311,6 @@
 
 
 ;;; eshell
-(defun disable-company-remote ()
-  (when (and (fboundp 'company-mode)
-             (file-remote-p default-directory))
-    (company-mode -1)))
-
 (after! eshell
   ;; muscle memory compensation
   (set-eshell-alias!
@@ -342,6 +340,10 @@
    "mkcd" "mkdir -p $1; cd $1" ;; will not inform if dir already exists
    "rmcdir" "cd ..; *rmdir $- || cd $-") ;; built-in rmdir does not return non-zero
 
+  (defun disable-company-remote ()
+    (when (and (fboundp 'company-mode)
+               (file-remote-p default-directory))
+      (company-mode -1)))
 
   ;; Only works if we open eshell in a remote dir (e.g. via SPC o t), not if we ssh
   (add-hook! 'eshell-mode-hook 'disable-company-remote))
@@ -350,7 +352,7 @@
 
 ;;; Magit
 (use-package! magit-delta
-  :when (modulep! :tools git)
+  :when (modulep! :tools magit)
   :after magit)
 
 (after! magit
