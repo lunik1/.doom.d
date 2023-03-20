@@ -184,6 +184,7 @@
 
 ;;; page-break-lines
 (use-package! page-break-lines
+  :defer t
   :hook ((emacs-lisp-mode help-mode) . page-break-lines-mode))
 
 
@@ -224,6 +225,7 @@
 
 ;;; Pinentry
 (use-package! pinentry
+  :defer t
   :init (pinentry-start))
 
 
@@ -270,6 +272,7 @@
 
 ;;; info-colors
 (use-package! info-colors
+  :defer t
   :after Info-mode-hook
   :hook (Info-selection . info-colors-fontify-node))
 
@@ -352,6 +355,7 @@
 
 ;;; Magit
 (use-package! magit-delta
+  :defer t
   :when (modulep! :tools magit)
   :after magit)
 
@@ -397,6 +401,7 @@
 ;;; Clojure
 ;; use flycheck-clojure to add eastwood and kibit support
 (use-package! flycheck-clojure
+  :defer t
   :when (and (modulep! :checkers syntax) (modulep! :lang clojure))
   :after (flycheck clojure-mode)
   :commands (flycheck-clojure-setup))
@@ -479,6 +484,7 @@
   (require 'ox-koma-letter)
 
   (use-package! org-pandoc-import
+    :defer t
     :when (modulep! :lang org))
   (add-hook! 'org-mode-hook #'+org-pretty-mode)
 
@@ -525,6 +531,7 @@
 
   ;; toggle markup characters on hover
   (use-package! org-appear
+    :defer t
     :hook (org-mode . org-appear-mode)
     :when (modulep! :lang org)
     :config
@@ -537,6 +544,7 @@
 
   ;; toggle LaTeX preview on hover
   (use-package! org-fragtog
+    :defer t
     :when (modulep! :lang org)
     :hook (org-mode . org-fragtog-mode))
 
