@@ -264,6 +264,9 @@
 (after! flycheck
   (setf flycheck-indication-mode 'left-fringe))
 
+
+
+;;; info-colors
 (use-package! info-colors
   :after Info-mode-hook
   :hook (Info-selection . info-colors-fontify-node))
