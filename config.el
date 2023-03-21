@@ -150,7 +150,7 @@
 
 
 ;;; Ligatures
-(when (modulep! ligatures)
+(when (modulep! :ui ligatures)
   (setf +ligatures-in-modes '(org-mode)
         +ligatures-extras-in-modes '(org-mode)
         +ligatures-extra-symbols
