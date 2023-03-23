@@ -561,9 +561,8 @@
 
   ;; add entry to org-smart-quotes-alist for eng-gb
   (after! ox
-    (setf org-export-smart-quotes-alist
-          (cons (cons "en-gb" (cdr (assoc "en" org-export-smart-quotes-alist)))
-                org-export-smart-quotes-alist))))
+    (setf (alist-get "en-gb" org-export-smart-quotes-alist nil nil 'string=)
+          (alist-get "en" org-export-smart-quotes-alist nil nil 'string=))))
 
 
 
