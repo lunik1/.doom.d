@@ -438,6 +438,9 @@
         LaTeX-indent-level 4
         LaTeX-item-indent -2)
 
+  (after! (format-all)
+    (set-formatter! 'latexindent "latexindent -l"))
+
   ;; make fill (gwip/gqip) use LaTeX-fill-region so indents are respected
   (evil-define-operator evil-LaTeX-fill (beg end)
     :move-point nil
