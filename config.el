@@ -576,6 +576,12 @@
 
 
 
+;;; Rust
+(after! (rust-mode lsp-mode)
+  (setf lsp-rust-analyzer-cargo-watch-command "clippy"))
+
+
+
 ;;; sh
 (setf sh-basic-offset 2)
 (add-hook! 'sh-mode-hook
@@ -606,3 +612,6 @@
   (map! :leader
         :when (modulep! :emacs dired +ranger)
         "p _" 'projectile-ranger))
+
+
+
