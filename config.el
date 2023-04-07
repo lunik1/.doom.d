@@ -577,7 +577,8 @@
 
 
 ;;; Rust
-(after! (rust-mode lsp-mode)
+(after! rust-mode
+  (setq-hook! 'rust-mode-hook +format-with-lsp nil)
   (setf lsp-rust-analyzer-cargo-watch-command "clippy"))
 
 
