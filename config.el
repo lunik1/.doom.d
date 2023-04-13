@@ -285,10 +285,14 @@
 
 
 
-;;; lsp-mode (global)
-(after! lsp-mode
-  (setf lsp-enable-indentation t
-        lsp-enable-on-type-formatting t))
+;;; eglot
+(after! eglot
+  (add-hook! 'eglot-managed-mode-hook (eglot-inlay-hints-mode -1)))
+
+
+
+(after! eldoc
+  (setf eldoc-echo-area-use-multiline-p nil))
 
 
 
@@ -416,18 +420,8 @@
 (after! (clojure-mode format-all)
   (set-formatter! 'zprint '("zprint" "{:search-config? true}")
     :modes '(clojure-mode)))
-(after! (clojure-mode lsp-mode)
+(after! (clojure-mode eglot)
   (setq-hook! 'clojure-mode-hook +format-with-lsp nil))
-
-
-
-;;; Julia
-;; fix LSP
-;; REVIEW: still necessary?
-(setf lsp-julia-default-environment "~/.julia/environments/v1.5.3")
-(after! julia-mode
-  (add-hook! 'julia-mode-hook
-    (setq-local lsp-enable-folding t)))
 
 
 
@@ -570,7 +564,7 @@
 
 
 ;;; Python
-(after! (python lsp-mode)
+(after! (python eglot)
   ;; prefer black over lsp's formatter
   (setq-hook! 'python-mode-hook +format-with-lsp nil))
 
