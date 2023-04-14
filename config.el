@@ -306,6 +306,7 @@
 
 
 
+;;; Eldoc
 (after! eldoc
   (setf eldoc-echo-area-use-multiline-p nil))
 
