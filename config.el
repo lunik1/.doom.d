@@ -267,6 +267,12 @@
 ;;; Flycheck
 (after! flycheck
   (setf flycheck-indication-mode 'left-fringe))
+;;; Smartparens
+(defun config--sp-then-fix-indent (&rest _)
+  "Fix the indent of the pair created on the new line"
+  (save-excursion
+    (forward-line)
+    (indent-according-to-mode)))
 
 
 
@@ -285,9 +291,12 @@
 
 
 
-;;; eglot
-(after! eglot
-  (add-hook! 'eglot-managed-mode-hook (eglot-inlay-hints-mode -1)))
+;;; lsp-mode (global)
+(after! lsp-mode
+  (setf lsp-enable-indentation t
+        lsp-enable-on-type-formatting t
+        lsp-lens-enable nil
+        lsp-ui-sideline-enable nil))
 
 
 
@@ -420,7 +429,7 @@
 (after! (clojure-mode format-all)
   (set-formatter! 'zprint '("zprint" "{:search-config? true}")
     :modes '(clojure-mode)))
-(after! (clojure-mode eglot)
+(after! (clojure-mode (:or eglot lsp-mode))
   (setq-hook! 'clojure-mode-hook +format-with-lsp nil))
 
 
@@ -564,7 +573,7 @@
 
 
 ;;; Python
-(after! (python eglot)
+(after! (python (:or eglot lsp-mode))
   ;; prefer black over lsp's formatter
   (setq-hook! 'python-mode-hook +format-with-lsp nil))
 
