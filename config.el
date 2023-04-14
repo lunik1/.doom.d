@@ -274,6 +274,12 @@
     (forward-line)
     (indent-according-to-mode)))
 
+(after! smartparens
+  (setf sp-pairs '())
+  (sp-pair "{" "\n}" :actions '(insert) :when '(sp-in-code-p ("RET")) :post-handlers '(:add config--sp-then-fix-indent))
+  (sp-pair "(" "\n)" :actions '(insert) :when '(sp-in-code-p ("RET")) :post-handlers '(:add config--sp-then-fix-indent))
+  (sp-pair "[" "\n]" :actions '(insert) :when '(sp-in-code-p ("RET")) :post-handlers '(:add config--sp-then-fix-indent)))
+
 
 
 ;;; info-colors
@@ -476,6 +482,11 @@
 ;; HACK use nixpkgs-fmt in nix-mode by setting the nixfmt bin to nixpkgs-fmt
 (after! nix-format
   (setf nix-nixfmt-bin "nixpkgs-fmt"))
+
+(after! nix-mode
+  (after! smartparens
+    (sp-local-pair 'nix-mode "{" "\n};" :actions '(insert) :when '(sp-in-code-p ("RET")) :post-handlers '(:add config--sp-then-fix-indent))))
+
 
 
 
