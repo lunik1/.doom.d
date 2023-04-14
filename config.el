@@ -266,7 +266,15 @@
 
 ;;; Flycheck
 (after! flycheck
-  (setf flycheck-indication-mode 'left-fringe))
+  (setf flycheck-indication-mode 'left-fringe)
+  ;; ./, are hard to differentiate with underlines
+  (custom-set-faces!
+    '(flycheck-error :background "#512725" :underline nil)
+    '(flycheck-warning :background "#524629" :underline nil )
+    '(flycheck-info :background "#1e3b40" :underline nil )))
+
+
+
 ;;; Smartparens
 (defun config--sp-then-fix-indent (&rest _)
   "Fix the indent of the pair created on the new line"
