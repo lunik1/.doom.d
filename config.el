@@ -211,7 +211,7 @@
 ;;; Company
 (after! company
   (setf company-idle-delay 0
-        company-minimum-prefix-length 2)
+        company-minimum-prefix-length 1)
 
   ;; childframe can sometimes stay open when entering normal mode (esp. in
   ;; python files)
