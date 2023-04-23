@@ -176,7 +176,7 @@
 
 
 
-;;; git-gutter
+;;; git-gutter-fringe
 (after! git-gutter-fringe
   (setf git-gutter-fr:side 'right-fringe))
 
