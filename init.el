@@ -183,6 +183,6 @@
 
        :config
        ;; literate
-       (default +bindings +smartparens))
+       (default +bindings))
 
 (setenv "LSP_USE_PLISTS" "true")

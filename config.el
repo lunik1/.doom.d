@@ -276,17 +276,34 @@
 
 
 ;;; Smartparens
-(defun config--sp-then-fix-indent (&rest _)
-  "Fix the indent of the pair created on the new line"
-  (save-excursion
-    (forward-line)
-    (indent-according-to-mode)))
+(remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
-(after! smartparens
-  (setf sp-pairs '())
-  (sp-pair "{" "\n}" :actions '(insert) :when '(sp-in-code-p ("RET")) :post-handlers '(:add config--sp-then-fix-indent))
-  (sp-pair "(" "\n)" :actions '(insert) :when '(sp-in-code-p ("RET")) :post-handlers '(:add config--sp-then-fix-indent))
-  (sp-pair "[" "\n]" :actions '(insert) :when '(sp-in-code-p ("RET")) :post-handlers '(:add config--sp-then-fix-indent)))
+
+
+;; electric-pair
+(use-package! electic-pair-mode
+  :defer t
+  :hook (prog-mode . electric-pair-mode))
+
+(defun electric-pair-open-newline-between-pairs-and-indent-psif ()
+  "Modified version of electric-pair-open-newline-between-pairs-psif that will
+correctly indent the new opening bracket."
+  (when (and (if (functionp electric-pair-open-newline-between-pairs)
+                 (funcall electric-pair-open-newline-between-pairs)
+               electric-pair-open-newline-between-pairs)
+             (eq last-command-event ?\n)
+             (< (1+ (point-min)) (point) (point-max))
+             (eq (save-excursion
+                   (skip-chars-backward "\t\s")
+                   (char-before (1- (point))))
+                 (matching-paren (char-after))))
+    (save-excursion (newline 1 t)
+                    (indent-according-to-mode))))
+
+(after! elec-pair
+  (setf electric-pair-inhibit-predicate #'electric-pair-conservative-inhibit
+        electric-pair-open-newline-between-pairs t)
+  (advice-add 'electric-pair-open-newline-between-pairs-psif :override #'electric-pair-open-newline-between-pairs-and-indent-psif))
 
 
 
@@ -491,11 +508,6 @@
 ;; HACK use nixpkgs-fmt in nix-mode by setting the nixfmt bin to nixpkgs-fmt
 (after! nix-format
   (setf nix-nixfmt-bin "nixpkgs-fmt"))
-
-(after! nix-mode
-  (after! smartparens
-    (sp-local-pair 'nix-mode "{" "\n};" :actions '(insert) :when '(sp-in-code-p ("RET")) :post-handlers '(:add config--sp-then-fix-indent))))
-
 
 
 
