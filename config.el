@@ -225,6 +225,7 @@
 
 ;;; Pinentry
 (use-package! pinentry
+  :if (not IS-WINDOWS)
   :defer t
   :init (pinentry-start))
 
