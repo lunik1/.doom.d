@@ -156,6 +156,12 @@
 
 
 
+;;; evil-goggles
+(after! evil-goggles
+  (setf evil-goggles-duration 0.15))
+
+
+
 ;;; Ligatures
 (when (modulep! :ui ligatures)
   (setf +ligatures-in-modes '(org-mode)
