@@ -43,6 +43,13 @@
       doom-themes-enable-bold t
       doom-themes-enable-italic t)
 
+;; theme tweaks
+(custom-set-faces!
+  ;; dark line highlight ()
+  '(hl-line :background "#1d2021")
+  ;;; …that matches solaire mode
+  '(solaire-default-face :background "#1d2021"))
+
 (after! doom-modeline
   (setf doom-modeline-unicode-fallback t))
 
