@@ -45,8 +45,9 @@
 
 ;; theme tweaks
 (custom-set-faces!
-  ;; dark line highlight ()
+  ;;; dark line highlight ()
   '(hl-line :background "#1d2021")
+  '(line-number-current-line :background "#1d2021" :weight semi-bold)
   ;;; …that matches solaire mode
   '(solaire-default-face :background "#1d2021"))
 
