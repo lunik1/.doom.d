@@ -51,6 +51,9 @@
   ;;; …that matches solaire mode
   '(solaire-default-face :background "#1d2021"))
 
+;;; theme does not set cursor colour
+(set-cursor-color "#ebdbb2")
+
 (after! doom-modeline
   (setf doom-modeline-unicode-fallback t))
 
