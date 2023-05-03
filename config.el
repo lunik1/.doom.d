@@ -246,6 +246,13 @@
   :defer t
   :init (pinentry-start))
 
+(after! pinentry
+  (defun pinentry-restart ()
+    "Restart pinentry service."
+    (interactive)
+    (pinentry-stop)
+    (pinentry-start)))
+
 
 
 ;;; Spellcheck
