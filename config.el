@@ -431,7 +431,8 @@ correctly indent the new opening bracket."
 
 (after! magit
   (magit-delta-mode +1)
-  (setf magit-delta-delta-args
+  (setf git-commit-summary-max-length 72
+        magit-delta-delta-args
         ;; need to use the magit-delta feature set defined in my git config as
         ;; line-numbers are not supported inside magit
         '("--24-bit-color" "always"
