@@ -350,7 +350,12 @@ correctly indent the new opening bracket."
 ;;; lsp-mode (global)
 (after! lsp-mode
   (setf lsp-enable-indentation t
+        lsp-enable-relative-indentation t
+        lsp-enable-text-document-color t
+        lsp-enable-folding t
         lsp-enable-on-type-formatting t
+        lsp-enable-suggest-server-download nil
+        lsp-enable-snippet nil
         lsp-lens-enable nil
         lsp-ui-sideline-enable nil))
 
