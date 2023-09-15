@@ -409,14 +409,33 @@ correctly indent the new opening bracket."
    "da" "du -sch"
    "dir" "ls -lSrah"
    "insecscp" "scp -o \"StrictHostKeyChecking=no\" -o \"UserKnownHostsFile=/dev/null\""
+   "llog" "sudo journalctl"
+   "tlog" "sudo journalctl -f"
+   "mdstat" "cat /proc/mdstat"
+   "mkcd" "mkdir -p $1; cd $1" ;; will not inform if dir already exists
+
    "l" "ls -l"
    "la" "ls -la"
+   "lad" "ls -d .*(/)" ;; shows ./ and ../
    "lh" "ls -hAl"
    "ll" "ls -l"
-   "llog" "sudo journalctl -f"
-   "llog" "sudo journalctl"
-   "mkcd" "mkdir -p $1; cd $1" ;; will not inform if dir already exists
-   "rmcdir" "cd ..; *rmdir $- || cd $-") ;; built-in rmdir does not return non-zero
+   "lsa" "ls -a .*(.)"
+   "lsbig" "ls -Slh | head -n 11"
+   "lsd" "ls -d *(/)"
+   ;; TODO lse
+   "lsl" "ls -ld *(@)"
+   "lsnew" "ls -rl | head -n 11"
+   "lsnewdir" "ls -rld *(/) | head -n 11"
+   "lsold" "ls -rlt | head -n 11"
+   "lsolddir" "ls -rltd *(/) | head -n 11"
+   "lss" "ls -l *(sSt)"
+   "lssmall" "ls -Slhr | head -n 11"
+   "lsw" "ls -ld *(RWX)"
+   "lsx" "ls -l *(*)"
+
+   "rmcdir" "cd ..; *rmdir $- || cd $-" ;; built-in rmdir does not return non-zero
+
+   "..." "cd ../../")
 
   (defun disable-company-remote ()
     (when (and (fboundp 'company-mode)
