@@ -400,8 +400,8 @@ correctly indent the new opening bracket."
   ;; from my .zshrc
   (set-eshell-alias!
    "pie" "perl -pi -e"
-   "rsync" "rsync -avzhPHA --checksum-choice=xxh3 --compress-choice=lz4 --info=progress2"
-   "srsync" "rsync --checksum-choice=xxh3 --compress-choice=zstd --info=progress2 -avzPhHAe ssh")
+   "rsync" "rsync -avzhPHA --info=progress2"
+   "srsync" "rsync --info=progress2 -avzPhHAe ssh")
 
   ;; grml
   (set-eshell-alias!
