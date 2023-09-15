@@ -289,14 +289,14 @@
 
 
 
-;;; Flycheck
-(after! flycheck
-  (setf flycheck-indication-mode 'left-fringe)
+;;; Flymake
+(after! flymake
+  (setf flymake-fringe-indicator-position 'left-fringe)
   ;; ./, are hard to differentiate with underlines
   (custom-set-faces!
-    '(flycheck-error :background "#512725" :underline nil)
-    '(flycheck-warning :background "#524629" :underline nil )
-    '(flycheck-info :background "#1e3b40" :underline nil )))
+    '(flymake-error :background "#512725" :underline nil)
+    '(flymake-warning :background "#524629" :underline nil)
+    '(flymake-note :background "#1e3b40" :underline nil )))
 
 
 
