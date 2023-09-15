@@ -283,6 +283,11 @@
 
 
 
+;; Comint
+(add-hook! 'comint-mode-hook (company-mode -1))
+
+
+
 ;;; docker.el
 (after! docker
   (setf docker-run-as-root t))
