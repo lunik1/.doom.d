@@ -708,5 +708,8 @@ correctly indent the new opening bracket."
         :when (modulep! :emacs dired +ranger)
         "p _" 'projectile-ranger))
 
+(after! (projectile)
+  (setf projectile-project-search-path '(("~/code/" . 2))))
+
 
 
