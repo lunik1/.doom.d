@@ -519,6 +519,9 @@ correctly indent the new opening bracket."
 (after! (clojure-mode (:or eglot lsp-mode))
   (setq-hook! 'clojure-mode-hook +format-with-lsp nil))
 
+;; recognise .bb (babashka) files as clojure
+(add-to-list 'auto-mode-alist '("\\.bb\\'" . clojure-mode))
+
 
 
 ;;; LaTeX
