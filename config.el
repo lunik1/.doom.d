@@ -394,6 +394,13 @@ correctly indent the new opening bracket."
 
 
 ;;; eshell
+(after! em-pred
+  ;; add full qualifier from zsh
+  (add-to-list 'eshell-predicate-alist
+               '(?F . (lambda (file)
+                        (and (file-directory-p file)
+                             (not (directory-empty-p file)))))))
+
 (after! eshell
   ;; muscle memory compensation
   (set-eshell-alias!
@@ -412,13 +419,15 @@ correctly indent the new opening bracket."
   (set-eshell-alias!
    "cdt" "cd ${mktemp -d}; pwd"
    "da" "du -sch"
-   "dir" "ls -lSrah"
    "insecscp" "scp -o \"StrictHostKeyChecking=no\" -o \"UserKnownHostsFile=/dev/null\""
    "llog" "sudo journalctl"
    "tlog" "sudo journalctl -f"
    "mdstat" "cat /proc/mdstat"
    "mkcd" "mkdir -p $1; cd $1" ;; will not inform if dir already exists
+   "rmcdir" "cd ..; *rmdir $- || cd $-" ;; built-in rmdir does not return non-zero
+   "j" "jobs -l"
 
+   "dir" "ls -lSrah"
    "l" "ls -l"
    "la" "ls -la"
    "lad" "ls -d .*(/)" ;; shows ./ and ../
@@ -427,7 +436,7 @@ correctly indent the new opening bracket."
    "lsa" "ls -a .*(.)"
    "lsbig" "ls -Slh | head -n 11"
    "lsd" "ls -d *(/)"
-   ;; TODO lse
+   "lse" "ls -d *(/^F)"
    "lsl" "ls -ld *(@)"
    "lsnew" "ls -rl | head -n 11"
    "lsnewdir" "ls -rld *(/) | head -n 11"
@@ -437,8 +446,6 @@ correctly indent the new opening bracket."
    "lssmall" "ls -Slhr | head -n 11"
    "lsw" "ls -ld *(RWX)"
    "lsx" "ls -l *(*)"
-
-   "rmcdir" "cd ..; *rmdir $- || cd $-" ;; built-in rmdir does not return non-zero
 
    "..." "cd ../../")
 
