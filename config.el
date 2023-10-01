@@ -448,7 +448,8 @@ correctly indent the new opening bracket."
       (company-mode -1)))
 
   ;; Only works if we open eshell in a remote dir (e.g. via SPC o t), not if we ssh
-  (add-hook! 'eshell-mode-hook 'disable-company-remote))
+  (add-hook! 'eshell-mode-hook (company-mode -1)))
+
 
 
 
