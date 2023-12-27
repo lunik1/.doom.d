@@ -35,10 +35,10 @@
 (setf +doom-dashboard-banner-dir "~/.doom.d/"
       +doom-dashboard-banner-file "tem.png"
       +doom-dashboard-banner-padding '(0 . 2)
-      doom-font (font-spec :family "Myosevka" :size 14)
+      doom-font (font-spec :family "Myosevka" :size 14.0)
       doom-unicode-font (font-spec :family "Julia Mono")
-      doom-variable-pitch-font (font-spec :family "Myosevka Etoile" :size 14)
-      doom-serif-font (font-spec :family "Myosevka Etoile" :size 14)
+      doom-variable-pitch-font (font-spec :family "Myosevka Etoile" :size 14.0)
+      doom-serif-font (font-spec :family "Myosevka Etoile" :size 14.0)
       doom-theme 'doom-gruvbox
       doom-themes-enable-bold t
       doom-themes-enable-italic t)
