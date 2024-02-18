@@ -373,6 +373,12 @@ correctly indent the new opening bracket."
 
 
 
+;; eglot
+(after! eglot
+  (add-hook! 'eglot-managed-mode-hook (eglot-inlay-hints-mode -1)))
+
+
+
 ;;; Eldoc
 (after! eldoc
   (setf eldoc-echo-area-use-multiline-p nil))
