@@ -315,9 +315,6 @@
   :defer t
   :hook (prog-mode . electric-pair-mode))
 
-(defun eol-p ()
-    (= (point) (line-end-position)))
-
 (defun electric-pair-open-newline-between-pairs-and-indent-psif ()
   "Modified version of electric-pair-open-newline-between-pairs-psif that will
 correctly indent the new opening bracket."
@@ -330,11 +327,13 @@ correctly indent the new opening bracket."
                    (skip-chars-backward "\t\s")
                    (char-before (1- (point))))
                  (matching-paren (char-after))))
-    (save-excursion (newline 1 t)
+    (save-excursion (newline "1" t)
                     (indent-according-to-mode))))
 
-(defun electric-pair-inhibit (_)
-  (not (eol-p)))
+(defun electric-pair-inhibit (char)
+  (or (electric-pair-conservative-inhibit char)
+      (electric-pair-inhibit-if-helps-balance char)
+      (eq (char-syntax (preceding-char)) ?w)))
 
 (after! elec-pair
   (setf electric-pair-inhibit-predicate #'electric-pair-inhibit
