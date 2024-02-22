@@ -351,6 +351,13 @@ correctly indent the new opening bracket."
 
 
 
+;; iscroll
+(use-package! iscroll
+  :defer t
+  :hook (text-mode . iscroll-mode))
+
+
+
 ;;; keyfreq
 (after! keyfreq
   (keyfreq-mode 1)
