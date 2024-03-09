@@ -59,6 +59,14 @@
 
 
 
+;;; DOOM modeline
+(custom-set-faces!
+  '(mode-line :family "Myosevka Proportional")
+  '(mode-line-active :family "Myosevka Proportional")
+  '(mode-line-inactive :family "Myosevka Proportional"))
+
+
+
 ;;; Evil
 (after! evil
   (setf evil-emacs-state-cursor '(bar +evil-emacs-cursor-fn))
