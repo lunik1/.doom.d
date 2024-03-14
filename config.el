@@ -195,6 +195,12 @@
 
 
 
+;;; apheleia
+(after! apheleia
+  (setf apheleia-remote-algorithm 'remote))
+
+
+
 ;;; doc-view-mode
 (after! doc-view
   (setf doc-view-resolution 300))
