@@ -75,5 +75,10 @@
 
 (package! jinja2-mode :pin "03e5430a7efe1d163a16beaf3c82c5fd2c2caee1  ")
 
+(package! eglot-booster
+  :recipe (:host github
+           :repo "jdtsmith/eglot-booster"
+           :files ("*.el")))
+
 (unpin! yaml-mode)
 
