@@ -252,6 +252,14 @@
       (when company-candidates
         (company-abort)))))
 
+
+
+
+;;; Corfu
+(after! corfu-terminal
+  ;; always enable so corfu works in the tty for mixed tty/gui sessions
+  (corfu-terminal-mode +1))
+
 
 
 ;;; Pinentry
