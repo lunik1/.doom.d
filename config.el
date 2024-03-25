@@ -29,6 +29,10 @@
 (map! :leader
       "w f" 'make-frame-command)
 
+;; mac likes to force the menu bar
+(if (eq system-type 'darwin)
+    (menu-bar-mode -1))
+
 
 
 ;;; DOOM
