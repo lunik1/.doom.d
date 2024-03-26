@@ -305,11 +305,6 @@
 
 
 
-;; Comint
-(add-hook! 'comint-mode-hook (company-mode -1))
-
-
-
 ;;; docker.el
 (after! docker
   (setf docker-run-as-root t))
@@ -497,15 +492,7 @@ correctly indent the new opening bracket."
    "lsw" "ls -ld *(RWX)"
    "lsx" "ls -l *(*)"
 
-   "..." "cd ../../")
-
-  (defun disable-company-remote ()
-    (when (and (fboundp 'company-mode)
-               (file-remote-p default-directory))
-      (company-mode -1)))
-
-  ;; Only works if we open eshell in a remote dir (e.g. via SPC o t), not if we ssh
-  (add-hook! 'eshell-mode-hook (company-mode -1)))
+   "..." "cd ../../"))
 
 
 
