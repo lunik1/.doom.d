@@ -404,7 +404,6 @@ correctly indent the new opening bracket."
 
 ;; eglot-booster
 (use-package! eglot-booster
-  :after eglot
   :when (modulep! :tools lsp +eglot)
   :hook (prog-mode . eglot-booster-mode)
   :config (setf eglot-booster-no-remote-boost t))
