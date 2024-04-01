@@ -398,7 +398,9 @@ correctly indent the new opening bracket."
 
 ;; eglot
 (after! eglot
-  (add-hook! 'eglot-managed-mode-hook (eglot-inlay-hints-mode -1)))
+  (add-hook! 'eglot-managed-mode-hook (eglot-inlay-hints-mode -1))
+  (add-to-list 'eglot-server-programs
+               '(beancount-mode . ("beancount-language-server"))))
 
 
 
