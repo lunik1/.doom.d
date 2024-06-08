@@ -760,3 +760,8 @@ correctly indent the new opening bracket."
 
 
 
+;;; treesit
+(after! (treesit)
+  (setq treesit-font-lock-level 4))
+
+
