@@ -731,10 +731,8 @@ correctly indent the new opening bracket."
 (add-hook! 'sh-mode-hook
   (setq-local evil-shift-width sh-basic-offset
               tab-width sh-basic-offset))
-
-;; shfmt: use spaces
-(after! (format-all)
-  (set-formatter! 'shfmt "shfmt -i 2"))
+(after! (apheleia)
+  (setf (alist-get 'sh-mode apheleia-mode-alist) 'shfmt))
 
 
 
