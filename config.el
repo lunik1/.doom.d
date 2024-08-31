@@ -365,14 +365,12 @@ correctly indent the new opening bracket."
 
 (defun electric-pair-inhibit (char)
   (or (electric-pair-conservative-inhibit char)
-      (electric-pair-inhibit-if-helps-balance char)
-      (eq (char-syntax (preceding-char)) ?w)))
+      (electric-pair-inhibit-if-helps-balance char)))
 
 (after! elec-pair
   (setf electric-pair-inhibit-predicate #'electric-pair-inhibit
         electric-pair-open-newline-between-pairs t)
   (advice-add 'electric-pair-open-newline-between-pairs-psif :override #'electric-pair-open-newline-between-pairs-and-indent-psif))
-
 
 
 
