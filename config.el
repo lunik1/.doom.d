@@ -207,6 +207,12 @@
 
 
 
+;;; diff-hl
+(after! diff-hl
+  (setf diff-hl-side 'right))
+
+
+
 ;;; git-gutter-fringe
 (after! git-gutter-fringe
   (setf git-gutter-fr:side 'right-fringe))
