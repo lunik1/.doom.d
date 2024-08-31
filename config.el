@@ -328,6 +328,16 @@
 
 
 
+;;; Flycheck
+(after! flycheck
+  ;; ./, are hard to differentiate with wavy underlines, so use straight at baseline
+  (custom-set-faces!
+    '(flycheck-error :underline (:position 0 :color "#fb4934"))
+    '(flycheck-warning :underline (:position 0 :color "#fabd2f"))
+    '(flycheck-info :underline (:position 0 :color "#83a598")))
+
+
+
 ;;; Smartparens
 (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
