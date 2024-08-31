@@ -407,6 +407,7 @@ correctly indent the new opening bracket."
         lsp-enable-on-type-formatting t
         lsp-enable-suggest-server-download nil
         lsp-enable-snippet nil
+        lsp-headerline-breadcrumb-enable t
         lsp-lens-enable nil
         lsp-ui-sideline-enable nil))
 
