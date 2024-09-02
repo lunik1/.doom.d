@@ -338,7 +338,7 @@
   (custom-set-faces!
     '(flycheck-error :underline (:position 0 :color "#fb4934"))
     '(flycheck-warning :underline (:position 0 :color "#fabd2f"))
-    '(flycheck-info :underline (:position 0 :color "#83a598")))
+    '(flycheck-info :underline (:position 0 :color "#83a598"))))
 
 
 
