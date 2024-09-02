@@ -266,6 +266,9 @@
 
 
 ;;; Corfu
+(after! corfu
+  (setf +corfu-want-ret-to-confirm 'both))
+
 (after! corfu-terminal
   ;; always enable so corfu works in the tty for mixed tty/gui sessions
   (corfu-terminal-mode +1))
