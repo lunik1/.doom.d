@@ -553,12 +553,6 @@ correctly indent the new opening bracket."
 
 
 
-;;; Beancount
-(after! (beancount format-all)
-  (set-formatter! 'bean-format "bean-format" :modes 'beancount-mode))
-
-
-
 ;;; cc-mode (C/C++/Objective-C/Java/COBRA IDL/Pike/AWK)
 (after! cc-mode
   (setf c-default-style "bsd"
@@ -580,13 +574,6 @@ correctly indent the new opening bracket."
 (after! clj-refactor
   (setf cljr-warn-on-eval nil))
 
-;; prefer zprint over clojure-lsp's formatter
-(after! (clojure-mode format-all)
-  (set-formatter! 'zprint '("zprint" "{:search-config? true}")
-    :modes '(clojure-mode)))
-(after! (clojure-mode (:or eglot lsp-mode))
-  (setq-hook! 'clojure-mode-hook +format-with-lsp nil))
-
 ;; recognise .bb (babashka) files as clojure
 (add-to-list 'auto-mode-alist '("\\.bb\\'" . clojure-mode))
 
@@ -598,9 +585,6 @@ correctly indent the new opening bracket."
         font-latex-fontify-script nil ; 〃
         LaTeX-indent-level 4
         LaTeX-item-indent -2)
-
-  (after! (format-all)
-    (set-formatter! 'latexindent "latexindent -l"))
 
   ;; make fill (gwip/gqip) use LaTeX-fill-region so indents are respected
   (evil-define-operator evil-LaTeX-fill (beg end)
@@ -755,13 +739,6 @@ correctly indent the new opening bracket."
               tab-width sh-basic-offset))
 (after! (apheleia)
   (setf (alist-get 'sh-mode apheleia-mode-alist) 'shfmt))
-
-
-
-;;; TOML
-;;; format with taplo
-(after! (format-all)
-  (set-formatter! 'taplo "taplo fmt -" :modes 'conf-toml-mode))
 
 
 
