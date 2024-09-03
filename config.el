@@ -615,9 +615,8 @@ correctly indent the new opening bracket."
 
 
 ;;; Nix
-;; HACK use nixpkgs-fmt in nix-mode by setting the nixfmt bin to nixpkgs-fmt
-(after! nix-format
-  (setf nix-nixfmt-bin "nixpkgs-fmt"))
+(after! lsp-nix
+  (setf lsp-nix-nil-formatter ["nixfmt"]))
 
 
 
