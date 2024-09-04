@@ -747,9 +747,8 @@ correctly indent the new opening bracket."
 
 
 ;;; Python
-(after! (python (:or eglot lsp-mode))
-  ;; prefer black over lsp's formatter
-  (setq-hook! 'python-mode-hook +format-with-lsp nil))
+(after! (python lsp-mode)
+  (setf lsp-pylsp-plugins-ruff-enabled t))
 
 
 
