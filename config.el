@@ -749,7 +749,9 @@ correctly indent the new opening bracket."
 
 ;;; Python
 (after! (python lsp-mode)
-  (setf lsp-pylsp-plugins-ruff-enabled t))
+  (setf lsp-pylsp-plugins-ruff-enabled t
+        lsp-pyright-langserver-command "basedpyright"
+        lsp-pyright-disable-organize-imports t))
 
 
 

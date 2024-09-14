@@ -80,5 +80,7 @@
            :repo "jdtsmith/eglot-booster"
            :files ("*.el")))
 
+(unpin! lsp-pyright)
+
 (unpin! yaml-mode)
 
