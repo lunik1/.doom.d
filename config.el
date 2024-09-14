@@ -777,16 +777,14 @@ correctly indent the new opening bracket."
 
 
 ;;; Projectile
-(when (modulep! :emacs dired)
-  (defun projectile-ranger ()
+(when (modulep! :emacs dired +dirvish)
+  (defun projectile-dirvish ()
     (interactive)
-    (ranger (projectile-project-root)))
+    (dirvish (projectile-project-root)))
 
   (map! :leader
-        "p -" 'projectile-dired)
-  (map! :leader
-        :when (modulep! :emacs dired +ranger)
-        "p _" 'projectile-ranger))
+        "p -" 'projectile-dired
+        "p /" 'projectile-dirvish))
 
 (after! (projectile)
   (setf projectile-project-search-path '(("~/code/" . 2))))
