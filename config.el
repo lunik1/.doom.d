@@ -116,9 +116,9 @@
       (evil-textobj-anyblock--make-textobj beg end type count t)))
 
   (define-key evil-inner-text-objects-map "q"
-    'my-evil-textobj-anyblock-inner-quote)
+              'my-evil-textobj-anyblock-inner-quote)
   (define-key evil-outer-text-objects-map "q"
-    'my-evil-textobj-anyblock-a-quote)
+              'my-evil-textobj-anyblock-a-quote)
 
   ;; more digraphs
   (setf evil-digraphs-table-user '(((?* ?e) . ?ϵ)
@@ -424,8 +424,8 @@ correctly indent the new opening bracket."
     (or
      (when (equal (following-char) ?#)
        (let ((bytecode (read (current-buffer))))
-         (when (byte-code-function-p bytecode)
-           (funcall bytecode))))
+       (when (byte-code-function-p bytecode)
+         (funcall bytecode))))
      (apply old-fn args)))
   (advice-add (if (progn (require 'json)
                          (fboundp 'json-parse-buffer))
