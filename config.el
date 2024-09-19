@@ -415,7 +415,8 @@ correctly indent the new opening bracket."
         lsp-enable-snippet nil
         lsp-headerline-breadcrumb-enable t
         lsp-lens-enable nil
-        lsp-ui-sideline-enable nil)
+        lsp-ui-sideline-enable nil
+        lsp-signature-auto-activate '(:on-server-request))
 
   ;; Use emacs-lsp-booster
   ;; From blahgeek/emacs-lsp-booster README
