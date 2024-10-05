@@ -482,8 +482,8 @@ correctly indent the new opening bracket."
     (or
      (when (equal (following-char) ?#)
        (let ((bytecode (read (current-buffer))))
-       (when (byte-code-function-p bytecode)
-         (funcall bytecode))))
+         (when (byte-code-function-p bytecode)
+           (funcall bytecode))))
      (apply old-fn args)))
   (advice-add (if (progn (require 'json)
                          (fboundp 'json-parse-buffer))
