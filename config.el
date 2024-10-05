@@ -192,6 +192,19 @@
 
 
 
+;; Casual Calc
+(use-package! casual-cal
+  :ensure nil
+  :bind (:map
+         calc-mode-map
+         ("C-o" . casual-calc-tmenu)
+         :map
+         calc-alg-map
+         ("C-o" . casual-calc-tmenu))
+  :after calc)
+
+
+
 ;; emacs-rotate.el
 (map! :leader
       :after rotate
