@@ -84,7 +84,7 @@
       +doom-dashboard-banner-file "tem.png"
       +doom-dashboard-ascii-banner-fn #'tem-dashboard-draw-ascii-banner-fn
       doom-font (font-spec :family "Myosevka" :size 13.0)
-      doom-unicode-font (font-spec :family "Julia Mono")
+      doom-symbol-font (font-spec :family "Julia Mono")
       doom-variable-pitch-font (font-spec :family "Myosevka Etoile" :size 13.0)
       doom-serif-font (font-spec :family "Myosevka Etoile" :size 13.0)
       doom-theme 'doom-gruvbox
