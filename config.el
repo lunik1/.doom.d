@@ -469,7 +469,7 @@ correctly indent the new opening bracket."
         lsp-enable-folding t
         lsp-enable-on-type-formatting t
         lsp-enable-suggest-server-download nil
-        lsp-enable-snippet nil
+        lsp-enable-snippet t
         lsp-headerline-breadcrumb-enable t
         lsp-lens-enable nil
         lsp-ui-sideline-enable nil
