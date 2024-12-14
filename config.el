@@ -236,8 +236,8 @@
 
 
 
-;; Casual Calc
-(use-package! casual-cal
+;; Casual
+(use-package! casual
   :ensure nil
   :bind (:map
          calc-mode-map
