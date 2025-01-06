@@ -394,7 +394,7 @@
 
 ;;; Flycheck
 (after! flycheck
-  (setf flycheck-idication-mode 'left-fringe)
+  (setf flycheck-indication-mode 'left-fringe)
   ;; ./, are hard to differentiate with wavy underlines, so use straight at baseline
   (custom-set-faces!
     '(flycheck-error :underline (:position 0 :color "#fb4934"))
