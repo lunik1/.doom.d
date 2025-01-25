@@ -392,6 +392,10 @@
 
 
 
+(defun maybe-enable-statix ()
+    (when (flycheck-may-use-checker 'statix)
+      (flycheck-select-checker 'statix)))
+
 ;;; Flycheck
 (after! flycheck
   (setf flycheck-indication-mode 'left-fringe)
@@ -399,7 +403,9 @@
   (custom-set-faces!
     '(flycheck-error :underline (:position 0 :color "#fb4934"))
     '(flycheck-warning :underline (:position 0 :color "#fabd2f"))
-    '(flycheck-info :underline (:position 0 :color "#83a598"))))
+    '(flycheck-info :underline (:position 0 :color "#83a598")))
+
+  (add-hook! 'nix-mode-hook #'maybe-enable-statix))
 
 
 
