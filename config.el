@@ -399,11 +399,11 @@
 ;;; Flycheck
 (after! flycheck
   (setf flycheck-indication-mode 'left-fringe)
-  ;; ./, are hard to differentiate with wavy underlines, so use straight at baseline
+  ;; ./, are hard to differentiate with wavy underlines, so use dotted line
   (custom-set-faces!
-    '(flycheck-error :underline (:position 0 :color "#fb4934"))
-    '(flycheck-warning :underline (:position 0 :color "#fabd2f"))
-    '(flycheck-info :underline (:position 0 :color "#83a598")))
+    '(flycheck-error :underline (:position 0 :color "#fb4934" :style dots))
+    '(flycheck-warning :underline (:position 0 :color "#fabd2f" :style dots))
+    '(flycheck-info :underline (:position 0 :color "#83a598" :style dots)))
 
   (add-hook! 'nix-mode-hook #'maybe-enable-statix))
 
