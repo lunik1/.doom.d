@@ -355,6 +355,16 @@
 
 
 
+;;; Spell-fu
+(after! spell-fu
+  (setq-default spell-fu-faces-include
+                (seq-uniq (append spell-fu-faces-include
+                                  '(tree-sitter-hl-face:comment
+                                    tree-sitter-hl-face:doc
+                                    tree-sitter-hl-face:string)))))
+
+
+
 ;;; TRAMP
 (after! tramp
   ;; set terminal type to "tramp" to allow specific config in shell rc files
