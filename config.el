@@ -358,13 +358,13 @@
 ;;; Spell-fu
 (after! spell-fu
   (add-hook! prog-mode
-    (setq spell-fu-faces-include
-          '(tree-sitter-hl-face:comment
-            tree-sitter-hl-face:doc
-            tree-sitter-hl-face:string
-            font-lock-comment-face
-            font-lock-doc-face
-            font-lock-string-face))))
+    (setopt spell-fu-faces-include
+            '(tree-sitter-hl-face:comment
+              tree-sitter-hl-face:doc
+              tree-sitter-hl-face:string
+              font-lock-comment-face
+              font-lock-doc-face
+              font-lock-string-face))))
 
 
 
@@ -870,6 +870,6 @@ correctly indent the new opening bracket."
 
 ;;; treesit
 (after! (treesit)
-  (setq treesit-font-lock-level 4))
+  (setopt treesit-font-lock-level 4))
 
 
