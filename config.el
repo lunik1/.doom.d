@@ -406,8 +406,8 @@
 
 
 (defun maybe-enable-statix ()
-    (when (flycheck-may-use-checker 'statix)
-      (flycheck-select-checker 'statix)))
+  (when (flycheck-may-use-checker 'statix)
+    (flycheck-select-checker 'statix)))
 
 ;;; Flycheck
 (after! flycheck
