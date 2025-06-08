@@ -357,11 +357,14 @@
 
 ;;; Spell-fu
 (after! spell-fu
-  (setq-default spell-fu-faces-include
-                (seq-uniq (append spell-fu-faces-include
-                                  '(tree-sitter-hl-face:comment
-                                    tree-sitter-hl-face:doc
-                                    tree-sitter-hl-face:string)))))
+  (add-hook! prog-mode
+    (setq spell-fu-faces-include
+          '(tree-sitter-hl-face:comment
+            tree-sitter-hl-face:doc
+            tree-sitter-hl-face:string
+            font-lock-comment-face
+            font-lock-doc-face
+            font-lock-string-face))))
 
 
 
