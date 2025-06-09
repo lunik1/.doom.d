@@ -3,19 +3,19 @@
 
 
 ;;; Global
-(setf display-line-numbers-type 'relative
-      x-stretch-cursor t
-      truncate-string-ellipsis "…"
-      scroll-margin 5
-      hscroll-margin 10
-      display-line-numbers-type 'relative
-      tab-width 4
-      user-full-name "Corin Hoad"
-      user-mail-address "ch.gpg@themaw.xyz"
-      ;; get/save auth info to an encrypted file
-      auth-sources '("~/.authinfo.gpg")
-      ;; cache gpg passphrase
-      epa-file-cache-passphrase-for-symmetric-encryption t)
+(setopt display-line-numbers-type 'relative
+        x-stretch-cursor t
+        truncate-string-ellipsis "…"
+        scroll-margin 5
+        hscroll-margin 10
+        display-line-numbers-type 'relative
+        tab-width 4
+        user-full-name "Corin Hoad"
+        user-mail-address "ch.gpg@themaw.xyz"
+        ;; get/save auth info to an encrypted file
+        auth-sources '("~/.authinfo.gpg")
+        ;; cache gpg passphrase
+        epa-file-cache-passphrase-for-symmetric-encryption t)
 
 (custom-set-faces!
   '(font-lock-comment-face :slant italic)
@@ -80,16 +80,16 @@
                "\n"))
      'face 'doom-dashboard-banner)))
 
-(setf +doom-dashboard-banner-dir "~/.doom.d/"
-      +doom-dashboard-banner-file "tem.png"
-      +doom-dashboard-ascii-banner-fn #'tem-dashboard-draw-ascii-banner-fn
-      doom-font (font-spec :family "Myosevka" :size 13.0)
-      doom-symbol-font (font-spec :family "Julia Mono")
-      doom-variable-pitch-font (font-spec :family "Myosevka Etoile" :size 13.0)
-      doom-serif-font (font-spec :family "Myosevka Etoile" :size 13.0)
-      doom-theme 'doom-gruvbox
-      doom-themes-enable-bold t
-      doom-themes-enable-italic t)
+(setopt +doom-dashboard-banner-dir "~/.doom.d/"
+        +doom-dashboard-banner-file "tem.png"
+        +doom-dashboard-ascii-banner-fn #'tem-dashboard-draw-ascii-banner-fn
+        doom-font (font-spec :family "Myosevka" :size 13.0)
+        doom-symbol-font (font-spec :family "Julia Mono")
+        doom-variable-pitch-font (font-spec :family "Myosevka Etoile" :size 13.0)
+        doom-serif-font (font-spec :family "Myosevka Etoile" :size 13.0)
+        doom-theme 'doom-gruvbox
+        doom-themes-enable-bold t
+        doom-themes-enable-italic t)
 
 ;; theme tweaks
 (custom-set-faces!
@@ -103,7 +103,7 @@
 (set-cursor-color "#ebdbb2")
 
 (after! doom-modeline
-  (setf doom-modeline-unicode-fallback t))
+  (setopt doom-modeline-unicode-fallback t))
 
 
 
@@ -117,7 +117,7 @@
 
 ;;; Evil
 (after! evil
-  (setf evil-emacs-state-cursor '(bar +evil-emacs-cursor-fn))
+  (setopt evil-emacs-state-cursor '(bar +evil-emacs-cursor-fn))
 
   ;; Add empty line above/below in normal mode with RET/S-RET
   (defun insert-line-below (n)
@@ -165,15 +165,15 @@
               'my-evil-textobj-anyblock-a-quote)
 
   ;; more digraphs
-  (setf evil-digraphs-table-user '(((?* ?e) . ?ϵ)
-                                   ((?* ?f) . ?ϖ)
-                                   ((?* ?h) . ?ϑ)
-                                   ((?* ?r) . ?ϱ)
-                                   ((?, ?.) . ?…)
-                                   ((?| ?>) . ?↦) ; \mapsto
-                                   ((?< ?|) . ?↤)
-                                   ((?/ ?E) . ?∄)
-                                   ((?h ?-) . ?ℏ)))
+  (setopt evil-digraphs-table-user '(((?* ?e) . ?ϵ)
+                                     ((?* ?f) . ?ϖ)
+                                     ((?* ?h) . ?ϑ)
+                                     ((?* ?r) . ?ϱ)
+                                     ((?, ?.) . ?…)
+                                     ((?| ?>) . ?↦) ; \mapsto
+                                     ((?< ?|) . ?↤)
+                                     ((?/ ?E) . ?∄)
+                                     ((?h ?-) . ?ℏ)))
   (map! :leader
         :after evil
         "w SPC"         'rotate-layout
@@ -218,21 +218,21 @@
 
 ;;; evil-goggles
 (after! evil-goggles
-  (setf evil-goggles-duration 0.15))
+  (setopt evil-goggles-duration 0.15))
 
 
 
 ;;; Ligatures
 (when (modulep! :ui ligatures)
-  (setf +ligatures-in-modes '(org-mode)
-        +ligatures-extras-in-modes '(org-mode)
-        +ligatures-extra-symbols
-        '(;; org
-          :name          "»"
-          :src_block     "›"
-          :src_block_end "‹"
-          :quote         "“"
-          :quote_end     "”")))
+  (setopt +ligatures-in-modes '(org-mode)
+          +ligatures-extras-in-modes '(org-mode)
+          +ligatures-extra-symbols
+          '(;; org
+            :name          "»"
+            :src_block     "›"
+            :src_block_end "‹"
+            :quote         "“"
+            :quote_end     "”")))
 
 
 
@@ -258,25 +258,25 @@
 
 ;;; apheleia
 (after! apheleia
-  (setf apheleia-remote-algorithm 'remote))
+  (setopt apheleia-remote-algorithm 'remote))
 
 
 
 ;;; doc-view-mode
 (after! doc-view
-  (setf doc-view-resolution 300))
+  (setopt doc-view-resolution 300))
 
 
 
 ;;; diff-hl
 (after! diff-hl
-  (setf diff-hl-side 'right))
+  (setopt diff-hl-side 'right))
 
 
 
 ;;; git-gutter-fringe
 (after! git-gutter-fringe
-  (setf git-gutter-fr:side 'right-fringe))
+  (setopt git-gutter-fr:side 'right-fringe))
 
 
 
@@ -300,16 +300,16 @@
     (let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
           (cmd-args '("/c" "start")))
       (when (file-exists-p cmd-exe)
-        (setf browse-url-generic-program  cmd-exe
-              browse-url-generic-args     cmd-args
-              browse-url-browser-function 'browse-url-generic)))))
+        (setopt browse-url-generic-program  cmd-exe
+                browse-url-generic-args     cmd-args
+                browse-url-browser-function 'browse-url-generic)))))
 
 
 
 ;;; Company
 (after! company
-  (setf company-idle-delay 0
-        company-minimum-prefix-length 1)
+  (setopt company-idle-delay 0
+          company-minimum-prefix-length 1)
 
   ;; childframe can sometimes stay open when entering normal mode (esp. in
   ;; python files)
@@ -324,7 +324,7 @@
 
 ;;; Corfu
 (after! corfu
-  (setf +corfu-want-ret-to-confirm 'both))
+  (setopt +corfu-want-ret-to-confirm 'both))
 
 (after! corfu-terminal
   ;; always enable so corfu works in the tty for mixed tty/gui sessions
@@ -349,9 +349,9 @@
 
 ;;; Spellcheck
 (after! ispell
-  (setf ispell-dictionary "en_GB"
-        ispell-personal-dictionary "~/.aspell.en.pws"
-        langtool-default-language "en-GB"))
+  (setopt ispell-dictionary "en_GB"
+          ispell-personal-dictionary "~/.aspell.en.pws"
+          langtool-default-language "en-GB"))
 
 
 
@@ -371,7 +371,7 @@
 ;;; TRAMP
 (after! tramp
   ;; set terminal type to "tramp" to allow specific config in shell rc files
-  (setf tramp-terminal-type "tramp")
+  (setopt tramp-terminal-type "tramp")
   ;; root access on remote machines
   (add-to-list 'tramp-default-proxies-alist
                '("^dionysus2$" "^root$" "/ssh:corin@dionysus2:"))
@@ -383,20 +383,20 @@
 
 ;;; avy
 (after! avy
-  (setf avy-all-windows t
-        avy-all-windows-alt 'all-frames))
+  (setopt avy-all-windows t
+          avy-all-windows-alt 'all-frames))
 
 
 
 ;;; docker.el
 (after! docker
-  (setf docker-run-as-root t))
+  (setopt docker-run-as-root t))
 
 
 
 ;;; Flymake
 (after! flymake
-  (setf flymake-fringe-indicator-position 'left-fringe)
+  (setopt flymake-fringe-indicator-position 'left-fringe)
   ;; ./, are hard to differentiate with underlines
   (custom-set-faces!
     '(flymake-error :background "#512725" :underline nil)
@@ -411,7 +411,7 @@
 
 ;;; Flycheck
 (after! flycheck
-  (setf flycheck-indication-mode 'left-fringe)
+  (setopt flycheck-indication-mode 'left-fringe)
   ;; ./, are hard to differentiate with wavy underlines, so use dotted line
   (custom-set-faces!
     '(flycheck-error :underline (:position 0 :color "#fb4934" :style dots))
@@ -452,8 +452,8 @@ correctly indent the new opening bracket."
       (electric-pair-inhibit-if-helps-balance char)))
 
 (after! elec-pair
-  (setf electric-pair-inhibit-predicate #'electric-pair-inhibit
-        electric-pair-open-newline-between-pairs t)
+  (setopt electric-pair-inhibit-predicate #'electric-pair-inhibit
+          electric-pair-open-newline-between-pairs t)
   (advice-add 'electric-pair-open-newline-between-pairs-psif :override #'electric-pair-open-newline-between-pairs-and-indent-psif))
 
 
@@ -482,17 +482,17 @@ correctly indent the new opening bracket."
 
 ;;; lsp-mode (global)
 (after! lsp-mode
-  (setf lsp-enable-indentation t
-        lsp-enable-relative-indentation t
-        lsp-enable-text-document-color t
-        lsp-enable-folding t
-        lsp-enable-on-type-formatting t
-        lsp-enable-suggest-server-download nil
-        lsp-enable-snippet t
-        lsp-headerline-breadcrumb-enable t
-        lsp-lens-enable nil
-        lsp-ui-sideline-enable nil
-        lsp-signature-auto-activate '(:on-server-request))
+  (setopt lsp-enable-indentation t
+          lsp-enable-relative-indentation t
+          lsp-enable-text-document-color t
+          lsp-enable-folding t
+          lsp-enable-on-type-formatting t
+          lsp-enable-suggest-server-download nil
+          lsp-enable-snippet t
+          lsp-headerline-breadcrumb-enable t
+          lsp-lens-enable nil
+          lsp-ui-sideline-enable nil
+          lsp-signature-auto-activate '(:on-server-request))
 
   ;; Use emacs-lsp-booster
   ;; From blahgeek/emacs-lsp-booster README
@@ -541,13 +541,13 @@ correctly indent the new opening bracket."
 (use-package! eglot-booster
   :when (modulep! :tools lsp +eglot)
   :hook (prog-mode . eglot-booster-mode)
-  :config (setf eglot-booster-no-remote-boost t))
+  :config (setopt eglot-booster-no-remote-boost t))
 
 
 
 ;;; Eldoc
 (after! eldoc
-  (setf eldoc-echo-area-use-multiline-p nil))
+  (setopt eldoc-echo-area-use-multiline-p nil))
 
 
 
@@ -568,7 +568,7 @@ correctly indent the new opening bracket."
 
 ;;; treemacs
 (after! treemacs
-  (setf doom-themes-treemacs-theme "doom-colors"))
+  (setopt doom-themes-treemacs-theme "doom-colors"))
 
 
 
@@ -639,13 +639,13 @@ correctly indent the new opening bracket."
 
 (after! magit
   (magit-delta-mode +1)
-  (setf git-commit-summary-max-length 72
-        magit-delta-delta-args
-        ;; need to use the magit-delta feature set defined in my git config as
-        ;; line-numbers are not supported inside magit
-        '("--24-bit-color" "always"
-          "--features" "magit-delta"
-          "--color-only")))
+  (setopt git-commit-summary-max-length 72
+          magit-delta-delta-args
+          ;; need to use the magit-delta feature set defined in my git config as
+          ;; line-numbers are not supported inside magit
+          '("--24-bit-color" "always"
+            "--features" "magit-delta"
+            "--color-only")))
 
 
 
@@ -666,8 +666,8 @@ correctly indent the new opening bracket."
 
 ;;; cc-mode (C/C++/Objective-C/Java/COBRA IDL/Pike/AWK)
 (after! cc-mode
-  (setf c-default-style "bsd"
-        c-basic-offset 4))
+  (setopt c-default-style "bsd"
+          c-basic-offset 4))
 
 
 
@@ -683,7 +683,7 @@ correctly indent the new opening bracket."
   (flycheck-clojure-setup)) ; must be run after cider
 
 (after! clj-refactor
-  (setf cljr-warn-on-eval nil))
+  (setopt cljr-warn-on-eval nil))
 
 ;; recognise .bb (babashka) files as clojure
 (add-to-list 'auto-mode-alist '("\\.bb\\'" . clojure-mode))
@@ -692,10 +692,10 @@ correctly indent the new opening bracket."
 
 ;;; LaTeX
 (after! tex-mode
-  (setf tex-fontify-script nil ; full-size rendering of (sub|super)scripts
-        font-latex-fontify-script nil ; 〃
-        LaTeX-indent-level 4
-        LaTeX-item-indent -2)
+  (setopt tex-fontify-script nil ; full-size rendering of (sub|super)scripts
+          font-latex-fontify-script nil ; 〃
+          LaTeX-indent-level 4
+          LaTeX-item-indent -2)
 
   ;; make fill (gwip/gqip) use LaTeX-fill-region so indents are respected
   (evil-define-operator evil-LaTeX-fill (beg end)
@@ -727,13 +727,13 @@ correctly indent the new opening bracket."
 
 ;;; Nix
 (after! lsp-nix
-  (setf lsp-nix-nil-formatter ["nixfmt"]))
+  (setopt lsp-nix-nil-formatter ["nixfmt"]))
 
 
 
 ;;; org-mode
 ;; set org-directory _before_ org loads
-(setf org-directory "~/org/")
+(setopt org-directory "~/org/")
 
 (after! org
   (require 'org-inlinetask)
@@ -746,32 +746,32 @@ correctly indent the new opening bracket."
     :when (modulep! :lang org))
   (add-hook! 'org-mode-hook #'+org-pretty-mode)
 
-  (setf org-use-property-inheritance t
-        org-pretty-entities nil
-        org-log-done 'time ; matches behaviour of orgzly
-        org-list-allow-alphabetical t
-        org-export-in-background nil
-        org-latex-pdf-process '("latexmk -f -pdf -%latex -shell-escape -interaction=nonstopmode -output-directory=%o %f")
-        org-latex-src-block-backend 'minted
-        org-latex-packages-alist '(("cache=false" "minted"))
-        org-re-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js"
-        org-ellipsis " ▼ "
-        )
+  (setopt org-use-property-inheritance t
+          org-pretty-entities nil
+          org-log-done 'time ; matches behaviour of orgzly
+          org-list-allow-alphabetical t
+          org-export-in-background nil
+          org-latex-pdf-process '("latexmk -f -pdf -%latex -shell-escape -interaction=nonstopmode -output-directory=%o %f")
+          org-latex-src-block-backend 'minted
+          org-latex-packages-alist '(("cache=false" "minted"))
+          org-re-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js"
+          org-ellipsis " ▼ "
+          )
 
   ;; use LuaLaTeX for inline LaTeX previews so unicode works
   (unless (assq 'luadvisvg org-preview-latex-process-alist)
-    (setf org-preview-latex-process-alist
-          (cl-acons 'luaimagemagick
-                    '(:programs ("lualatex" "convert")
-                      :description "pdf > png (via lualatex)"
-                      :message "you need to install the programs: lualatex and imagemagick."
-                      :image-input-type "pdf"
-                      :image-output-type "png"
-                      :image-size-adjust (1.0 . 1.0)
-                      :latex-compiler ("lualatex -interaction nonstopmode -output-directory %o %f")
-                      :image-converter ("convert -density %D -trim -antialias %f -quality 100 %O"))
-                    org-preview-latex-process-alist)
-          org-preview-latex-default-process 'luaimagemagick))
+    (setopt org-preview-latex-process-alist
+            (cl-acons 'luaimagemagick
+                      '(:programs ("lualatex" "convert")
+                        :description "pdf > png (via lualatex)"
+                        :message "you need to install the programs: lualatex and imagemagick."
+                        :image-input-type "pdf"
+                        :image-output-type "png"
+                        :image-size-adjust (1.0 . 1.0)
+                        :latex-compiler ("lualatex -interaction nonstopmode -output-directory %o %f")
+                        :image-converter ("convert -density %D -trim -antialias %f -quality 100 %O"))
+                      org-preview-latex-process-alist)
+            org-preview-latex-default-process 'luaimagemagick))
 
   ;; Toggle subtrees with ↹
   (after! evil-org
@@ -793,9 +793,9 @@ correctly indent the new opening bracket."
     :hook (org-mode . org-appear-mode)
     :when (modulep! :lang org)
     :config
-    (setf org-appear-autoemphasis t
-          org-appear-autosubmarkers t
-          org-appear-autolinks t)
+    (setopt org-appear-autoemphasis t
+            org-appear-autosubmarkers t
+            org-appear-autolinks t)
     ;; for proper first-time setup, `org-appear--set-fragments'
     ;; needs to be run after other hooks have acted.
     (run-at-time nil nil #'org-appear--set-fragments))
@@ -826,9 +826,9 @@ correctly indent the new opening bracket."
 
 ;;; Python
 (after! (python lsp-mode)
-  (setf lsp-pylsp-plugins-ruff-enabled t
-        lsp-pyright-langserver-command "basedpyright"
-        lsp-pyright-disable-organize-imports t))
+  (setopt lsp-pylsp-plugins-ruff-enabled t
+          lsp-pyright-langserver-command "basedpyright"
+          lsp-pyright-disable-organize-imports t))
 
 
 
@@ -837,14 +837,14 @@ correctly indent the new opening bracket."
   (setq-hook! 'rust-mode-hook
     +format-with-lsp nil)
   (after! lsp-mode
-    (setf lsp-rust-analyzer-cargo-watch-command "clippy"
-          lsp-rust-analyzer-completion-add-call-parenthesis nil
-          lsp-rust-analyzer-completion-add-call-argument-snippets nil)))
+    (setopt lsp-rust-analyzer-cargo-watch-command "clippy"
+            lsp-rust-analyzer-completion-add-call-parenthesis nil
+            lsp-rust-analyzer-completion-add-call-argument-snippets nil)))
 
 
 
 ;;; sh
-(setf sh-basic-offset 2)
+(setopt sh-basic-offset 2)
 (add-hook! 'sh-mode-hook
   (setq-local evil-shift-width sh-basic-offset
               tab-width sh-basic-offset))
@@ -864,7 +864,7 @@ correctly indent the new opening bracket."
         "p /" 'projectile-dirvish))
 
 (after! (projectile)
-  (setf projectile-project-search-path '(("~/code/" . 2))))
+  (setopt projectile-project-search-path '(("~/code/" . 2))))
 
 
 
