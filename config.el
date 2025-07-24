@@ -405,13 +405,14 @@
 
 
 
+;;; Flycheck
 (defun maybe-enable-statix ()
   (when (flycheck-may-use-checker 'statix)
     (flycheck-select-checker 'statix)))
 
-;;; Flycheck
 (after! flycheck
-  (setopt flycheck-indication-mode 'left-fringe)
+  (setopt flycheck-indication-mode 'left-fringe
+          flycheck-checker-error-threshold 10000)
   ;; ./, are hard to differentiate with wavy underlines, so use dotted line
   (custom-set-faces!
     '(flycheck-error :underline (:position 0 :color "#fb4934" :style dots))
