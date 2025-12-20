@@ -430,7 +430,7 @@
 
 
 ;; electric-pair
-(use-package! electic-pair-mode
+(use-package! electric-pair-mode
   :defer t
   :hook (prog-mode . electric-pair-mode))
 
