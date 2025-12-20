@@ -117,7 +117,8 @@
 
 ;;; Evil
 (after! evil
-  (setopt evil-emacs-state-cursor '(bar +evil-emacs-cursor-fn))
+  (setopt evil-emacs-state-cursor '(bar +evil-emacs-cursor-fn)
+          evil-escape-key-sequence "kj")
 
   ;; Add empty line above/below in normal mode with RET/S-RET
   (defun insert-line-below (n)
