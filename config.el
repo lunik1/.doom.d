@@ -727,6 +727,11 @@ correctly indent the new opening bracket."
 
 
 
+;; typst
+(use-package! typst-ts-mode)
+
+
+
 ;;; Nix
 (after! lsp-nix
   (setopt lsp-nix-nil-formatter ["nixfmt"]))
