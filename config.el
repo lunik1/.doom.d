@@ -832,6 +832,9 @@ correctly indent the new opening bracket."
 
 
 ;;; Python
+(after! python
+  (setopt python-fill-docstring-style 'django))
+
 (after! (python lsp-mode)
   (setopt lsp-pylsp-plugins-ruff-enabled t
           lsp-pyright-langserver-command "basedpyright"
