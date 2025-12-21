@@ -883,3 +883,14 @@ correctly indent the new opening bracket."
   (setopt treesit-font-lock-level 4))
 
 
+
+;;; YAML
+(after! (yaml-ts-mode)
+  (derived-mode-set-parent 'yaml-ts-mode 'prog-mode)
+  (add-hook 'yaml-ts-mode-hook
+            (lambda ()
+              (when (bound-and-true-p mixed-pitch-mode)
+                (mixed-pitch-mode -1)))
+            t))
+
+
