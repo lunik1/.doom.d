@@ -111,7 +111,7 @@
 
        :lang
        ;;agda              ; types of types of types of types...
-       (beancount +lsp)
+       ;; (beancount +lsp)
        (cc +lsp +tree-sitter)                ; C/C++/Obj-C madness
        (clojure +lsp)           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
