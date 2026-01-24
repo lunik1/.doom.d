@@ -8,7 +8,6 @@
         truncate-string-ellipsis "…"
         scroll-margin 5
         hscroll-margin 10
-        display-line-numbers-type 'relative
         tab-width 4
         user-full-name "Corin Hoad"
         user-mail-address "ch.gpg@themaw.xyz"
