@@ -101,9 +101,6 @@
 ;;; theme does not set cursor colour
 (set-cursor-color "#ebdbb2")
 
-(after! doom-modeline
-  (setopt doom-modeline-unicode-fallback t))
-
 
 
 ;;; DOOM modeline
