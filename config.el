@@ -637,6 +637,7 @@ correctly indent the new opening bracket."
 
 (after! magit
   (magit-delta-mode +1)
+  (add-hook 'magit-mode-hook (lambda () (indent-bars-mode -1)))
   (setopt git-commit-summary-max-length 72
           magit-delta-delta-args
           ;; need to use the magit-delta feature set defined in my git config as
