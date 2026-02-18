@@ -554,16 +554,6 @@ correctly indent the new opening bracket."
 
 
 
-;;; ranger
-(after! ranger
-  (add-hook 'ranger-mode-hook 'all-the-icons-dired-mode))
-
-(when (modulep! :emacs dired +ranger)
-  (map! :leader
-        "o _" 'ranger))
-
-
-
 ;;; treemacs
 (after! treemacs
   (setopt doom-themes-treemacs-theme "doom-colors"))
@@ -654,9 +644,6 @@ correctly indent the new opening bracket."
   (setf (alist-get "woman" vterm-eval-cmds nil nil #'equal)
         '((lambda (topic)
             (woman topic)))
-        (alist-get "ranger" vterm-eval-cmds nil nil #'equal)
-        '((lambda (dir)
-            (ranger dir)))
         (alist-get "dired" vterm-eval-cmds nil nil #'equal)
         '((lambda (dir)
             (dired dir)))))
