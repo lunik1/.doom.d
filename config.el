@@ -420,6 +420,14 @@
 
 
 
+;;; indent bars
+(after! indent-bars
+  (add-hook! '+indent-guides-inhibit-functions
+    (defun +indent-guides-dired-p ()
+      (derived-mode-p 'dired-mode))))
+
+
+
 ;;; Smartparens
 (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
