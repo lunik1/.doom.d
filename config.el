@@ -235,7 +235,6 @@
 
 ;; Casual
 (use-package! casual
-  :ensure nil
   :bind (:map
          calc-mode-map
          ("C-o" . casual-calc-tmenu)
