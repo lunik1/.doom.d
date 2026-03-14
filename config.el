@@ -847,9 +847,9 @@ correctly indent the new opening bracket."
 
 ;;; sh
 (setopt sh-basic-offset 2)
-(add-hook! 'sh-mode-hook
-  (setq-local evil-shift-width sh-basic-offset
-              tab-width sh-basic-offset))
+(setq-hook! 'sh-mode-hook
+  evil-shift-width sh-basic-offset
+  tab-width sh-basic-offset)
 (after! (apheleia)
   (setf (alist-get 'sh-mode apheleia-mode-alist) 'shfmt))
 
