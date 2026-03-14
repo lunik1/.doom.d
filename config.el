@@ -642,7 +642,8 @@ correctly indent the new opening bracket."
           ;; line-numbers are not supported inside magit
           '("--24-bit-color" "always"
             "--features" "magit-delta"
-            "--color-only")))
+            "--color-only")
+          magit-diff-visit-prefer-worktree t))
 
 
 
