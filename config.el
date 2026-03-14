@@ -133,7 +133,7 @@
         :n "S-<return>" 'insert-line-above)
 
   ;; Define quote textobkect so diq etc. works inside any kind of quotes
-  (require 'evil-textobj-anyblock)
+  (use-package! evil-textobj-anyblock)
   (evil-define-text-object my-evil-textobj-anyblock-inner-quote
     (count &optional beg end _type)
     "Select the closest outer quote."
@@ -735,10 +735,10 @@ correctly indent the new opening bracket."
 (setopt org-directory "~/org/")
 
 (after! org
-  (require 'org-inlinetask)
-  (require 'ox-gfm nil t)
-  (require 'ox-rst)
-  (require 'ox-koma-letter)
+  (use-package! org-inlinetask)
+  (use-package! ox-gfm)
+  (use-package! ox-rst)
+  (use-package! ox-koma-letter)
 
   (use-package! org-pandoc-import
     :defer t
