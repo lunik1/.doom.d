@@ -331,7 +331,7 @@
 
 ;;; Pinentry
 (use-package! pinentry
-  :if (not IS-WINDOWS)
+  :if (not (featurep :system 'windows))
   :defer t
   :init (pinentry-start))
 
