@@ -867,7 +867,32 @@ correctly indent the new opening bracket."
         "p /" 'projectile-dirvish))
 
 (after! (projectile)
-  (setopt projectile-project-search-path '(("~/code/" . 2))))
+  (setopt projectile-project-search-path '(("~/code/" . 2)))
+
+  (defun +projectile-invalidate-cache-maybe (&rest _)
+    (when (projectile-project-p)
+      (projectile-invalidate-cache nil)))
+
+  ;; Invalidate cache after git operations that change files
+  (dolist (hook '(magit-post-checkout-hook
+                  magit-post-merge-hook
+                  magit-post-rebase-hook))
+    (add-hook hook #'projectile-invalidate-cache))
+
+  (dolist (fn '(dired-do-rename
+                dired-do-delete
+                dired-do-copy
+                dired-create-directory
+                doom/delete-this-file
+                doom/move-this-file
+                magit-pull
+                magit-stash-both
+                magit-stash-worktree
+                magit-stash-index
+                magit-stash-keep-index
+                magit-stash-apply
+                magit-stash-pop))
+    (advice-add fn :after #'+projectile-invalidate-cache-maybe)))
 
 
 
