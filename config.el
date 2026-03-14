@@ -467,7 +467,7 @@ correctly indent the new opening bracket."
 ;;; info-colors
 (use-package! info-colors
   :defer t
-  :after Info-mode-hook
+  :after info
   :hook (Info-selection . info-colors-fontify-node))
 
 
