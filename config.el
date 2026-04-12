@@ -9,6 +9,7 @@
         scroll-margin 5
         hscroll-margin 10
         tab-width 4
+        save-interprogram-paste-before-kill t
         user-full-name "Corin Hoad"
         user-mail-address "ch.gpg@themaw.xyz"
         ;; get/save auth info to an encrypted file
