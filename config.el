@@ -354,14 +354,13 @@
 
 ;;; Spell-fu
 (after! spell-fu
-  (add-hook! prog-mode
-    (setopt spell-fu-faces-include
-            '(tree-sitter-hl-face:comment
-              tree-sitter-hl-face:doc
-              tree-sitter-hl-face:string
-              font-lock-comment-face
-              font-lock-doc-face
-              font-lock-string-face))))
+  (setq-hook! 'prog-mode-hook
+    spell-fu-faces-include '(tree-sitter-hl-face:comment
+                             tree-sitter-hl-face:doc
+                             tree-sitter-hl-face:string
+                             font-lock-comment-face
+                             font-lock-doc-face
+                             font-lock-string-face)))
 
 
 
