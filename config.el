@@ -402,10 +402,6 @@
 
 
 ;;; Flycheck
-(defun maybe-enable-statix ()
-  (when (flycheck-may-use-checker 'statix)
-    (flycheck-select-checker 'statix)))
-
 (after! flycheck
   (setopt flycheck-indication-mode 'left-fringe
           flycheck-checker-error-threshold 10000)
@@ -415,7 +411,8 @@
     '(flycheck-warning :underline (:position 0 :color "#fabd2f" :style dots))
     '(flycheck-info :underline (:position 0 :color "#83a598" :style dots)))
 
-  (add-hook! 'nix-mode-hook #'maybe-enable-statix))
+  ;; Add nix-ts-mode support to statix checker
+  (flycheck-add-mode 'statix 'nix-ts-mode))
 
 
 
@@ -949,6 +946,11 @@ Cd to the project root by default. With prefix ARG, use the current
 ;;; Nix
 (after! lsp-nix
   (setopt lsp-nix-nil-formatter ["nixfmt"]))
+
+;; Fix statix on nix-ts-mode by explicitly chaining
+(after! (lsp-diagnostics flycheck)
+  (lsp-diagnostics-flycheck-enable)
+  (flycheck-add-next-checker 'lsp 'statix))
 
 
 
