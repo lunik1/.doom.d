@@ -645,6 +645,7 @@ correctly indent the new opening bracket."
   ;; grml
   (set-eshell-alias!
    "cdt" "cd ${mktemp -d}; pwd"
+   "cl" "cd $1; ls -a"
    "da" "du -sch"
    "insecscp" "scp -o \"StrictHostKeyChecking=no\" -o \"UserKnownHostsFile=/dev/null\""
    "llog" "sudo journalctl"
@@ -653,6 +654,7 @@ correctly indent the new opening bracket."
    "mkcd" "mkdir -p $1; cd $1" ;; will not inform if dir already exists
    "rmcdir" "cd ..; *rmdir $- || cd $-" ;; built-in rmdir does not return non-zero
    "j" "jobs -l"
+   "llblk" "lsblk -o +LABEL,PARTLABEL,UUID,FSTYPE,SERIAL"
 
    "dir" "ls -lSrah"
    "l" "ls -l"
