@@ -672,9 +672,7 @@ correctly indent the new opening bracket."
    "lss" "ls -l *(sSt)"
    "lssmall" "ls -Slhr | head -n 11"
    "lsw" "ls -ld *(RWX)"
-   "lsx" "ls -l *(*)"
-
-   "..." "cd ../../")
+   "lsx" "ls -l *(*)")
 
   ;; functions ported from my .zshrc
   (defun eshell/myip (&optional flag)
@@ -692,7 +690,17 @@ correctly indent the new opening bracket."
     (let ((tmp (make-temp-name (concat (expand-file-name file1) "."))))
       (rename-file file1 tmp)
       (rename-file file2 file1)
-      (rename-file tmp file2))))
+      (rename-file tmp file2)))
+
+  ;; `rationalise-dot' from zsh for eshell
+  (defun +eshell-rationalise-dot ()
+    (interactive)
+    (if (looking-back "\\(?:^\\|[/ \t|;&]\\)\\.\\."
+                      (max (point-min) (- (point) 3)))
+        (insert "/..")
+      (insert ".")))
+
+  (define-key eshell-mode-map (kbd ".") #'+eshell-rationalise-dot))
 
 (after! em-dirs
   ;; zsh-style AUTO_PUSHD
