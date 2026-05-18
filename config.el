@@ -719,6 +719,13 @@ correctly indent the new opening bracket."
           (unless (and eshell-pushd-dunique (member prev eshell-dirstack))
             (push prev eshell-dirstack)))))))
 
+(after! em-hist
+  (setopt eshell-hist-ignoredups t ; HIST_IGNORE_DUPS
+          eshell-history-size 50000 ; HISTSIZE
+          eshell-input-filter ; HIST_IGNORE_SPACE
+          (lambda (input)
+            (and (eshell-input-filter-default input)
+                 (not (string-match-p "\\`\\s-" input))))))
 
 
 
