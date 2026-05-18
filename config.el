@@ -694,6 +694,15 @@ correctly indent the new opening bracket."
       (rename-file file2 file1)
       (rename-file tmp file2)))
 
+  ;; grml's `any'
+  (defun eshell/any (term)
+    (let ((s (format "%s" (or term ""))))
+      (when (string-empty-p s)
+        (user-error "Usage: any KEYWORD"))
+      (let ((pat (concat "[" (substring s 0 1) "]" (substring s 1))))
+        (shell-command-to-string
+         (format "ps xauwww | grep -i %s" (shell-quote-argument pat))))))
+
   ;; `rationalise-dot' from zsh for eshell
   (defun +eshell-rationalise-dot ()
     (interactive)
