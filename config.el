@@ -703,6 +703,27 @@ correctly indent the new opening bracket."
         (shell-command-to-string
          (format "ps xauwww | grep -i %s" (shell-quote-argument pat))))))
 
+  ;; grml's `accessed' / `changed' / `modified'
+  (defun +eshell--list-by-time (attr-fn days)
+    "Print non-hidden files in CWD whose timestamp (per ATTR-FN) is within DAYS days."
+    (let ((cutoff (- (float-time) (* (or days 1) 86400))))
+      (dolist (f (directory-files default-directory nil "^[^.]"))
+        (when-let* ((attrs (file-attributes f))
+                    ((> (float-time (funcall attr-fn attrs)) cutoff)))
+          (eshell-printn f)))))
+
+  (defun eshell/accessed (&optional days)
+    "List files accessed within DAYS days (default 1)."
+    (+eshell--list-by-time #'file-attribute-access-time days))
+
+  (defun eshell/changed (&optional days)
+    "List files with status changed within DAYS days (default 1)."
+    (+eshell--list-by-time #'file-attribute-status-change-time days))
+
+  (defun eshell/modified (&optional days)
+    "List files modified within DAYS days (default 1)."
+    (+eshell--list-by-time #'file-attribute-modification-time days))
+
   ;; `rationalise-dot' from zsh for eshell
   (defun +eshell-rationalise-dot ()
     (interactive)
