@@ -673,6 +673,31 @@ correctly indent the new opening bracket."
 
    "..." "cd ../../"))
 
+(after! em-dirs
+  ;; zsh-style AUTO_PUSHD
+  (setopt eshell-pushd-dunique t
+          eshell-pushd-tohome t
+          eshell-last-dir-unique t)
+
+  (defvar +eshell--auto-pushd-inhibit nil
+    "When non-nil, suppress `+eshell-auto-pushd-h'.")
+
+  ;; prevent `pushd'/`popd'`'s own dirstack managegement from interfering
+  (define-advice eshell/pushd (:around (orig &rest args) +auto-pushd-inhibit)
+    (let ((+eshell--auto-pushd-inhibit t)) (apply orig args)))
+  (define-advice eshell/popd (:around (orig &rest args) +auto-pushd-inhibit)
+    (let ((+eshell--auto-pushd-inhibit t)) (apply orig args)))
+
+  (add-hook! 'eshell-directory-change-hook
+    (defun +eshell-auto-pushd-h ()
+      "Push the previous directory onto `eshell-dirstack' on every cd."
+      (unless +eshell--auto-pushd-inhibit
+        (when-let* ((ring eshell-last-dir-ring)
+                    ((not (ring-empty-p ring)))
+                    (prev (ring-ref ring 0)))
+          (unless (and eshell-pushd-dunique (member prev eshell-dirstack))
+            (push prev eshell-dirstack)))))))
+
 
 
 
