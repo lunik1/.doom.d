@@ -637,7 +637,10 @@ correctly indent the new opening bracket."
   (set-eshell-alias!
    "pie" "perl -pi -e"
    "rsync" "rsync -avzhPHA --info=progress2"
-   "srsync" "rsync --info=progress2 -avzPhHAe ssh")
+   "srsync" "rsync --info=progress2 -avzPhHAe ssh"
+   "nfb" "nix-fast-build"
+   "nixpkgs-revhead" "nixpkgs-review rev HEAD"
+   "pdfopt" "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.5 -dNOPAUSE -dQUIET -dBATCH -dPrinted=false -sOutputFile=$2 $1")
 
   ;; grml
   (set-eshell-alias!
@@ -671,7 +674,25 @@ correctly indent the new opening bracket."
    "lsw" "ls -ld *(RWX)"
    "lsx" "ls -l *(*)"
 
-   "..." "cd ../../"))
+   "..." "cd ../../")
+
+  ;; functions ported from my .zshrc
+  (defun eshell/myip (&optional flag)
+    "Print this host's public IP.  FLAG is `-4' (default) or `-6'."
+    (string-trim
+     (shell-command-to-string
+      (format "curl -s %s https://icanhazip.com" (or flag "-4")))))
+
+  (defun eshell/hex (n)
+    "Print N as hexadecimal."
+    (format "%x" (if (stringp n) (string-to-number n) n)))
+
+  (defun eshell/swap (file1 file2)
+    "Swap FILE1 and FILE2 by renaming through a temporary name."
+    (let ((tmp (make-temp-name (concat (expand-file-name file1) "."))))
+      (rename-file file1 tmp)
+      (rename-file file2 file1)
+      (rename-file tmp file2))))
 
 (after! em-dirs
   ;; zsh-style AUTO_PUSHD
