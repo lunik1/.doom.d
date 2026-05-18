@@ -83,3 +83,5 @@
 (unpin! lsp-pyright)
 
 (package! typst-ts-mode :recipe (:host nil :repo "https://git.sr.ht/~meow_king/typst-ts-mode"))
+
+(package! reflow :recipe (:host nil :repo "https://code.tecosaur.net/tec/reflow.el"))

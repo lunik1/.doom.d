@@ -557,6 +557,55 @@ correctly indent the new opening bracket."
 
 
 
+;; Reflow
+
+(use-package! reflow
+  :config
+  (setopt reflow-column-margin 0))
+
+(after! reflow
+  (reflow-mode 1)
+
+  (defun +reflow-fill-paragraph (&optional justify)
+    "Use `reflow-paragraph' in prose contexts, otherwise `fill-paragraph'."
+    (interactive (list (if current-prefix-arg 'full)))
+    (if (reflow--prose-context-p)
+        (reflow-paragraph justify)
+      (fill-paragraph justify)))
+  (global-set-key [remap fill-paragraph] #'+reflow-fill-paragraph)
+
+  (evil-define-operator +reflow-evil-fill (beg end)
+    "Like `evil-fill', preferring `reflow-region' in prose contexts."
+    :move-point nil
+    :type line
+    (save-excursion
+      (condition-case nil
+          (if (save-excursion (goto-char beg) (reflow--prose-context-p))
+              (reflow-region beg end)
+            (fill-region beg end))
+        (error nil))))
+
+  (evil-define-operator +reflow-evil-fill-and-move (beg end)
+    "Like `evil-fill-and-move', preferring `reflow-region' in prose contexts."
+    :move-point nil
+    :type line
+    (let ((marker (make-marker)))
+      (move-marker marker (1- end))
+      (condition-case nil
+          (progn
+            (if (save-excursion (goto-char beg) (reflow--prose-context-p))
+                (reflow-region beg end)
+              (fill-region beg end))
+            (goto-char marker)
+            (evil-first-non-blank))
+        (error nil))))
+
+  (evil-define-key '(normal visual motion) 'global
+    [remap evil-fill] #'+reflow-evil-fill
+    [remap evil-fill-and-move] #'+reflow-evil-fill-and-move))
+
+
+
 ;;; Text-mode
 (add-hook! 'text-mode-hook #'mixed-pitch-mode)
 
