@@ -1036,7 +1036,7 @@ correctly indent the new opening bracket."
   (dolist (hook '(magit-post-checkout-hook
                   magit-post-merge-hook
                   magit-post-rebase-hook))
-    (add-hook hook #'projectile-invalidate-cache))
+    (add-hook hook #'+projectile-invalidate-cache-maybe))
 
   (dolist (fn '(dired-do-rename
                 dired-do-delete
