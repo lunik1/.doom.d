@@ -74,7 +74,6 @@
        :term
        eshell            ; the elisp shell that works everywhere
        ;; shell             ; simple shell REPL for Emacs
-       (:if (not IS-WINDOWS) vterm)             ; the best terminal emulation in Emacs
 
        :checkers
        (syntax +childframe +icons)              ; tasing you for every semicolon you forget

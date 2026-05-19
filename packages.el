@@ -85,3 +85,11 @@
 (package! typst-ts-mode :recipe (:host nil :repo "https://git.sr.ht/~meow_king/typst-ts-mode"))
 
 (package! reflow :recipe (:host nil :repo "https://code.tecosaur.net/tec/reflow.el"))
+
+(package! eat
+  :recipe (:host codeberg
+           :repo "akib/emacs-eat"
+           :files ("*.el" ("term" "term/*") "*.texi" "*.ti"
+                   ("terminfo/e" "terminfo/e/*")
+                   ("terminfo/65" "terminfo/65/*")
+                   ("integration" "integration/*"))))

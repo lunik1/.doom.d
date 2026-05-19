@@ -806,6 +806,69 @@ correctly indent the new opening bracket."
 
 
 
+;;; Eat
+(use-package! eat
+  :defer t
+  :hook (eat-mode . mode-line-invisible-mode)
+  :init
+  ;; Broader than "*eat*" so the rule fires for project-prefixed names too
+  ;; (e.g. "*my-project-eat*" from `eat-project').
+  (set-popup-rule! "^\\*\\(?:.*-\\)?eat\\*" :size 0.25 :vslot -4 :select t :quit nil :ttl 0)
+  :config
+  (setopt eat-kill-buffer-on-exit t
+          eat-term-scrollback-size 200000)
+  (setq-hook! 'eat-mode-hook
+    confirm-kill-processes nil
+    hscroll-margin 0))
+
+;; integrate eat with eshell whenever eshell loads, regardless of which package
+;; gets loaded first
+(after! eshell
+  (require 'eat)
+  (eat-eshell-mode 1)
+  (eat-eshell-visual-command-mode 1))
+
+(defvar eat-buffer-name)
+
+(defun +eat/toggle (arg)
+  "Toggle an eat popup window in the current workspace.
+The terminal cwd starts at the project root. With prefix ARG, kill
+and recreate the buffer."
+  (interactive "P")
+  (let* ((project-root (or (doom-project-root) default-directory))
+         (default-directory project-root)
+         (persp-name (if (bound-and-true-p persp-mode)
+                         (safe-persp-name (get-current-persp))
+                       "main"))
+         (eat-buffer-name (format "*%s-eat*" persp-name))
+         (buffer (get-buffer eat-buffer-name)))
+    (setenv "PROOT" project-root)
+    (when (and arg buffer)
+      (let (confirm-kill-processes)
+        (kill-buffer buffer))
+      (setq buffer nil))
+    (if-let* ((window (and buffer (get-buffer-window buffer))))
+        (delete-window window)
+      (eat))))
+
+(defun +eat/here (arg)
+  "Open eat in the current window, bypassing popup rules.
+Cd to the project root by default. With prefix ARG, use the current
+`default-directory' instead."
+  (interactive "P")
+  (let* ((project-root (or (doom-project-root) default-directory))
+         (default-directory (if arg default-directory project-root)))
+    (setenv "PROOT" project-root)
+    (let (display-buffer-alist)
+      (eat))))
+
+(map! :leader
+      (:prefix "o"
+       :desc "Toggle eat popup" "t" #'+eat/toggle
+       :desc "Open eat here"    "T" #'+eat/here))
+
+
+
 ;;; Vterm
 ;; define commands in vterm that will interact with the enclosing emacs instance
 (after! vterm
