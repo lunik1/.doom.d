@@ -757,7 +757,24 @@ correctly indent the new opening bracket."
                     ((not (ring-empty-p ring)))
                     (prev (ring-ref ring 0)))
           (unless (and eshell-pushd-dunique (member prev eshell-dirstack))
-            (push prev eshell-dirstack)))))))
+            (push prev eshell-dirstack))))))
+
+  ;; grmls smart cd: correct `cd <file>' to `cd <file_parent>'
+  (define-advice eshell/cd (:around (orig &rest args) +smart-cd)
+    (let* ((flat (flatten-tree args))
+           (arg (and (= (length flat) 1)
+                     (stringp (car flat))
+                     ;; skip eshell special forms: `-', `-N', `=foo'
+                     (not (string-match-p "\\`\\(-[0-9]*\\|=\\)" (car flat)))
+                     (car flat)))
+           (parent (and arg
+                        (file-regular-p arg)
+                        (or (file-name-directory arg) "."))))
+      (if parent
+          (progn
+            (message "Correcting %s to %s" arg parent)
+            (funcall orig parent))
+        (apply orig args)))))
 
 (after! em-hist
   (setopt eshell-hist-ignoredups t ; HIST_IGNORE_DUPS
