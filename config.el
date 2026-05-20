@@ -780,8 +780,39 @@ correctly indent the new opening bracket."
             (and (eshell-input-filter-default input)
                  (not (string-match-p "\\`\\s-" input))))))
 
-
+(after! em-term
+  (dolist (cmd '("atuin"
+                 "btop"
+                 "claude"
+                 "dialog"
+                 "fzf"
+                 "gemini"
+                 "hugetop"
+                 "irqtop"
+                 "journalctl"
+                 "nano"
+                 "nix-tree"
+                 "nvim"
+                 "pgcli"
+                 "pinentry-curses"
+                 "psql"
+                 "redis-cli"
+                 "slabtop"
+                 "sqlite3"
+                 "systemd-cgtop"
+                 "tload"
+                 "w3m"
+                 "watch"
+                 "yazi"))
+    (add-to-list 'eshell-visual-commands cmd))
 
+  ;; pager-invoking subcommands
+  (add-to-list 'eshell-visual-subcommands '("git" "log" "diff" "show" "blame"))
+  (add-to-list 'eshell-visual-subcommands '("ollama" "run"))
+
+  (add-to-list 'eshell-visual-options '("git" "--help" "--paginate")))
+
+
 ;;; Magit
 (use-package! magit-delta
   :defer t
