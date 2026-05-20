@@ -1049,10 +1049,7 @@ Cd to the project root by default. With prefix ARG, use the current
     :config
     (setopt org-appear-autoemphasis t
             org-appear-autosubmarkers t
-            org-appear-autolinks t)
-    ;; for proper first-time setup, `org-appear--set-fragments'
-    ;; needs to be run after other hooks have acted.
-    (run-at-time nil nil #'org-appear--set-fragments))
+            org-appear-autolinks t))
 
   ;; toggle LaTeX preview on hover
   (use-package! org-fragtog
