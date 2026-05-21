@@ -1080,6 +1080,53 @@ Cd to the project root by default. With prefix ARG, use the current
 
 
 
+;;; dirvish
+(after! dirvish-subtree
+  ;; Use stipples for indent guides
+  (when (or (display-graphic-p) (daemonp))
+    (setopt dirvish-subtree-prefix "  ")
+    (after! indent-bars
+      ;; paint only first column of indent with `dirvish-subtree-guide'
+      (define-advice dirvish-subtree--insert (:around (orig) +dirvish-thin-guide)
+        (cl-letf (((symbol-function 'propertize)
+                   (lambda (str &rest _)
+                     (let ((plen (length dirvish-subtree-prefix))
+                           (result (copy-sequence str)))
+                       (cl-loop for i from 0 below (length result) by plen
+                                do (put-text-property
+                                    i (1+ i) 'face 'dirvish-subtree-guide result))
+                       result))))
+          (funcall orig)))
+
+      (defun +dirvish-apply-guide-stipple (&optional frame)
+        "Paint `dirvish-subtree-guide' as a faded dotted vertical line, matching indent-bars."
+        (when (display-graphic-p frame)
+          (let* ((w (frame-char-width frame))
+                 (h (frame-char-height frame))
+                 (row-bytes (/ (+ w 7) 8))
+                 (bar-width (max 1 (round (* w indent-bars-width-frac))))
+                 (pad (round (* w indent-bars-pad-frac)))
+                 (bar-bits (ash (1- (ash 1 bar-width)) pad))
+                 (bar-row (let ((s (make-string row-bytes 0)))
+                            (dotimes (b row-bytes)
+                              (aset s b (logand 255 (ash bar-bits (* -8 b)))))
+                            s))
+                 (gap-row (make-string row-bytes 0))
+                 (plen (length indent-bars-pattern))
+                 (seg-rows (max 1 (/ h plen)))
+                 (bitmap (apply #'concat
+                                (cl-loop for ch across indent-bars-pattern
+                                         nconc (make-list seg-rows
+                                                          (if (eq ch ?\s) gap-row bar-row))))))
+            (set-face-attribute 'dirvish-subtree-guide frame
+                                :foreground (face-foreground 'font-lock-comment-face nil 'default)
+                                :stipple (list w (* seg-rows plen) bitmap)))))
+
+      (+dirvish-apply-guide-stipple)
+      (add-hook 'after-make-frame-functions #'+dirvish-apply-guide-stipple))))
+
+
+
 ;;; Projectile
 (when (modulep! :emacs dired +dirvish)
   (defun projectile-dirvish ()
