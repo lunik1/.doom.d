@@ -1343,9 +1343,14 @@ holds nothing left to clarify."
                                 (cl-loop for ch across indent-bars-pattern
                                          nconc (make-list seg-rows
                                                           (if (eq ch ?\s) gap-row bar-row))))))
-            (set-face-attribute 'dirvish-subtree-guide frame
-                                :foreground (face-foreground 'font-lock-comment-face nil 'default)
-                                :stipple (list w (* seg-rows plen) bitmap)))))
+            (let ((color (if (listp indent-bars-color)
+                             (doom-blend (face-foreground (car indent-bars-color) nil t)
+                                         (face-background 'default nil t)
+                                         (plist-get (cdr indent-bars-color) :blend))
+                           (face-foreground indent-bars-color nil t))))
+              (set-face-attribute 'dirvish-subtree-guide frame
+                                  :foreground color
+                                  :stipple (list w (* seg-rows plen) bitmap))))))
 
       (+dirvish-apply-guide-stipple)
       (add-hook 'after-make-frame-functions #'+dirvish-apply-guide-stipple))))
