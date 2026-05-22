@@ -93,3 +93,5 @@
                    ("terminfo/e" "terminfo/e/*")
                    ("terminfo/65" "terminfo/65/*")
                    ("integration" "integration/*"))))
+
+(package! eshell-atuin)

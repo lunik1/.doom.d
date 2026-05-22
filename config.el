@@ -785,6 +785,14 @@ correctly indent the new opening bracket."
 
   (add-to-list 'eshell-visual-options '("git" "--help" "--paginate")))
 
+(use-package! eshell-atuin
+  :after eshell
+  :config
+  (eshell-atuin-mode +1)
+  (map! :map eshell-mode-map
+        :n "C-r" #'eshell-atuin-history
+        :i "C-r" #'eshell-atuin-history))
+
 
 ;;; Magit
 (use-package! magit-delta
