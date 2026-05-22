@@ -321,7 +321,14 @@
 
 ;;; Corfu
 (after! corfu
-  (setopt +corfu-want-ret-to-confirm 'both))
+  (setopt +corfu-want-ret-to-confirm 'both)
+
+  ;; (mixed-pitch fonts break corfu's padding calculations)
+  (defun +corfu--monospace-popup-a (buf)
+    (with-current-buffer buf
+      (setf (alist-get 'default face-remapping-alist) '(corfu-default default)))
+    buf)
+  (advice-add 'corfu--make-buffer :filter-return #'+corfu--monospace-popup-a))
 
 (after! corfu-terminal
   ;; always enable so corfu works in the tty for mixed tty/gui sessions
