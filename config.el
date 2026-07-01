@@ -417,7 +417,8 @@
 (after! indent-bars
   (add-hook! '+indent-guides-inhibit-functions
     (defun +indent-guides-dired-p ()
-      (derived-mode-p 'dired-mode))))
+      (or (derived-mode-p 'dired-mode)
+          (derived-mode-p 'ghostel-mode)))))
 
 
 
@@ -812,78 +813,61 @@ correctly indent the new opening bracket."
 
 
 
-;;; Eat
-(use-package! eat
-  :defer t
-  :hook (eat-mode . mode-line-invisible-mode)
-  :init
-  ;; Broader than "*eat*" so the rule fires for project-prefixed names too
-  ;; (e.g. "*my-project-eat*" from `eat-project').
-  (set-popup-rule! "^\\*\\(?:.*-\\)?eat\\*" :size 0.25 :vslot -4 :select t :quit nil :ttl 0)
+;;; Ghostel
+(use-package! ghostel
   :config
-  (setopt eat-kill-buffer-on-exit t
-          eat-term-scrollback-size 200000)
-  (setq-hook! 'eat-mode-hook
-    confirm-kill-processes nil
-    hscroll-margin 0))
+  (set-popup-rule! "^\\*doom:ghostel-popup" :size 0.25 :vslot -4 :select t :quit nil :ttl 0)
+  (map! :map ghostel-mode-map
+        "C-q" #'ghostel-send-next-key))
 
-;; integrate eat with eshell whenever eshell loads, regardless of which package
-;; gets loaded first
-(after! eshell
-  (require 'eat)
-  (eat-eshell-mode 1)
-  (eat-eshell-visual-command-mode 1))
+(use-package! ghostel-eshell
+  :hook (eshell-load . ghostel-eshell-visual-command-mode))
 
-(defvar eat-buffer-name)
+(use-package! ghostel-compile
+  :hook (after-init . ghostel-compile-global-mode))
 
-(defun +eat/toggle (arg)
-  "Toggle an eat popup window in the current workspace.
-The terminal cwd starts at the project root. With prefix ARG, kill
-and recreate the buffer."
+(defun +ghostel--popup-buffer-name ()
+  (format "*doom:ghostel-popup:%s*"
+          (if (bound-and-true-p persp-mode)
+              (safe-persp-name (get-current-persp))
+            "main")))
+
+(defun +ghostel/toggle (arg)
+  "Toggle a ghostel terminal popup at project root.
+
+With prefix ARG, cd into `default-directory' instead."
   (interactive "P")
   (let* ((project-root (or (doom-project-root) default-directory))
-         (default-directory project-root)
-         (persp-name (if (bound-and-true-p persp-mode)
-                         (safe-persp-name (get-current-persp))
-                       "main"))
-         (eat-buffer-name (format "*%s-eat*" persp-name))
-         (buffer (get-buffer eat-buffer-name)))
+         (default-directory (if arg default-directory project-root))
+         (buf-name (+ghostel--popup-buffer-name)))
     (setenv "PROOT" project-root)
-    (when (and arg buffer)
-      (let (confirm-kill-processes)
-        (kill-buffer buffer))
-      (setq buffer nil))
-    (if-let* ((window (and buffer (get-buffer-window buffer))))
-        (delete-window window)
-      (eat))))
+    (if-let* ((win (get-buffer-window buf-name)))
+        (delete-window win)
+      (let ((buf (or (get-buffer buf-name)
+                     ;; ghostel creates its own buffer; let it, then rename it
+                     (save-window-excursion
+                       (ghostel)
+                       (rename-buffer buf-name)
+                       (current-buffer)))))
+        (pop-to-buffer buf)))))
 
-(defun +eat/here (arg)
-  "Open eat in the current window, bypassing popup rules.
-Cd to the project root by default. With prefix ARG, use the current
-`default-directory' instead."
+(defun +ghostel/here (arg)
+  "Open a ghostel terminal in the current window at project root.
+
+With prefix ARG, cd into `default-directory' instead."
   (interactive "P")
   (let* ((project-root (or (doom-project-root) default-directory))
          (default-directory (if arg default-directory project-root)))
     (setenv "PROOT" project-root)
+    ;; bypass popup system so ghostel opens in the current window
     (let (display-buffer-alist)
-      (eat))))
+      (ghostel))))
 
 (map! :leader
       (:prefix "o"
-       :desc "Toggle eat popup" "t" #'+eat/toggle
-       :desc "Open eat here"    "T" #'+eat/here))
+       :desc "Toggle ghostel popup" "t" #'+ghostel/toggle
+       :desc "Open ghostel here"    "T" #'+ghostel/here))
 
-
-
-;;; Vterm
-;; define commands in vterm that will interact with the enclosing emacs instance
-(after! vterm
-  (setf (alist-get "woman" vterm-eval-cmds nil nil #'equal)
-        '((lambda (topic)
-            (woman topic)))
-        (alist-get "dired" vterm-eval-cmds nil nil #'equal)
-        '((lambda (dir)
-            (dired dir)))))
 
 
 
