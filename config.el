@@ -1007,10 +1007,10 @@ With prefix ARG, cd into `default-directory' instead."
           org-agenda-custom-commands
           `(("g" "GTD dashboard"
              ((agenda "" ((org-agenda-span 'day)))
-              (alltodo ""
-                       ((org-agenda-overriding-header "Inbox to process")
-                        (org-agenda-files
-                         (list ,(expand-file-name "inbox.org" org-directory)))))
+              (tags "LEVEL=1"
+                    ((org-agenda-overriding-header "Inbox to process")
+                     (org-agenda-files
+                      (list ,(expand-file-name "inbox.org" org-directory)))))
               (todo "TODO"
                     ((org-agenda-overriding-header "TODOs")
                      ;; a blocked task is not actionable, so drop it from here
@@ -1030,10 +1030,10 @@ With prefix ARG, cd into `default-directory' instead."
              ((todo "PROJ"
                     ((org-agenda-overriding-header "Stalled projects (no TODOs)")
                      (org-agenda-skip-function #'+org/skip-projects-with-next)))
-              (alltodo ""
-                       ((org-agenda-overriding-header "Inbox to process")
-                        (org-agenda-files
-                         (list ,(expand-file-name "inbox.org" org-directory)))))
+              (tags "LEVEL=1"
+                    ((org-agenda-overriding-header "Inbox to process")
+                     (org-agenda-files
+                      (list ,(expand-file-name "inbox.org" org-directory)))))
               (todo "WAIT" ((org-agenda-overriding-header "Waiting on")))
               (alltodo ""
                        ((org-agenda-overriding-header "Someday / Maybe")
