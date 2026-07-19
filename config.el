@@ -814,64 +814,6 @@ correctly indent the new opening bracket."
 
 
 
-;;; Ghostel
-(use-package! ghostel
-  :config
-  (set-popup-rule! "^\\*doom:ghostel-popup" :size 0.25 :vslot -4 :select t :quit nil :ttl 0)
-  (map! :map ghostel-mode-map
-        "C-q" #'ghostel-send-next-key))
-
-(use-package! ghostel-eshell
-  :hook (eshell-load . ghostel-eshell-visual-command-mode))
-
-(use-package! ghostel-compile
-  :hook (after-init . ghostel-compile-global-mode))
-
-(defun +ghostel--popup-buffer-name ()
-  (format "*doom:ghostel-popup:%s*"
-          (if (bound-and-true-p persp-mode)
-              (safe-persp-name (get-current-persp))
-            "main")))
-
-(defun +ghostel/toggle (arg)
-  "Toggle a ghostel terminal popup at project root.
-
-With prefix ARG, cd into `default-directory' instead."
-  (interactive "P")
-  (let* ((project-root (or (doom-project-root) default-directory))
-         (default-directory (if arg default-directory project-root))
-         (buf-name (+ghostel--popup-buffer-name)))
-    (setenv "PROOT" project-root)
-    (if-let* ((win (get-buffer-window buf-name)))
-        (delete-window win)
-      (let ((buf (or (get-buffer buf-name)
-                     ;; ghostel creates its own buffer; let it, then rename it
-                     (save-window-excursion
-                       (ghostel)
-                       (rename-buffer buf-name)
-                       (current-buffer)))))
-        (pop-to-buffer buf)))))
-
-(defun +ghostel/here (arg)
-  "Open a ghostel terminal in the current window at project root.
-
-With prefix ARG, cd into `default-directory' instead."
-  (interactive "P")
-  (let* ((project-root (or (doom-project-root) default-directory))
-         (default-directory (if arg default-directory project-root)))
-    (setenv "PROOT" project-root)
-    ;; bypass popup system so ghostel opens in the current window
-    (let (display-buffer-alist)
-      (ghostel))))
-
-(map! :leader
-      (:prefix "o"
-       :desc "Toggle ghostel popup" "t" #'+ghostel/toggle
-       :desc "Open ghostel here"    "T" #'+ghostel/here))
-
-
-
-
 ;;; cc-mode (C/C++/Objective-C/Java/COBRA IDL/Pike/AWK)
 (after! cc-mode
   (setopt c-default-style "bsd"

@@ -72,7 +72,8 @@
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
-       eshell            ; the elisp shell that works everywhere
+       (ghostel +everywhere)
+       ;; eshell            ; the elisp shell that works everywhere
        ;; shell             ; simple shell REPL for Emacs
 
        :checkers
