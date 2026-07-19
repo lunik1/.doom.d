@@ -975,6 +975,141 @@ With prefix ARG, cd into `default-directory' instead."
           org-ellipsis " ▼ "
           )
 
+  ;;; GTDish setup for org tasks
+  (defconst +gtd-context-tags
+    '(("@anywhere" . ?a) ("@work" . ?w) ("@computer" . ?c)
+      ("@outside" . ?o) ("@home" . ?h) ("@somewhere" . ?s))
+    "Context tags/fast selection key pairs.")
+
+  (setopt org-log-into-drawer t ; keep log notes out of the body so orgzly renders entries cleanly
+          ;; INBX: unclarified capture | TODO: actionable now | WAIT: blocked
+          ;; PROJ: multi-step task container | KILL: dropped
+          org-todo-keywords
+          '((sequence "INBX(i)" "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "KILL(k@)")
+            (sequence "PROJ(p)" "|" "DONE(d!)"))
+          ;; only include GTD files in agenda
+          org-agenda-files
+          (mapcar (lambda (f) (expand-file-name f org-directory))
+                  '("inbox.org" "projects.org" "next.org" "someday.org" "tickler.org"))
+          ;; a task deferred to a future date stays out of the todo lists
+          ;; until that date, then reappears (task-until-date deferral)
+          org-agenda-todo-ignore-scheduled 'future
+          org-capture-templates
+          '(("t" "Task" entry (file "inbox.org")
+             "* INBX %?\n%U" :empty-lines 1)
+            ("n" "Note" entry (file "inbox.org")
+             "* %?\n%U" :empty-lines 1))
+          ;; refile from the inbox into any heading of an agenda file
+          org-refile-targets '((org-agenda-files :maxlevel . 3))
+          org-refile-use-outline-path 'file
+          org-outline-path-complete-in-steps nil
+          org-refile-allow-creating-parent-nodes 'confirm
+          org-agenda-custom-commands
+          `(("g" "GTD dashboard"
+             ((agenda "" ((org-agenda-span 'day)))
+              (alltodo ""
+                       ((org-agenda-overriding-header "Inbox to process")
+                        (org-agenda-files
+                         (list ,(expand-file-name "inbox.org" org-directory)))))
+              (todo "TODO"
+                    ((org-agenda-overriding-header "TODOs")
+                     ;; a blocked task is not actionable, so drop it from here
+                     (org-agenda-skip-function
+                      (lambda ()
+                        (when (org-entry-blocked-p)
+                          (or (outline-next-heading) (point-max)))))))
+              (todo "WAIT" ((org-agenda-overriding-header "Waiting on")))))
+            ;; one TODO-actions block per context, generated from the tag list
+            ("c" "By context"
+             ,(mapcar (lambda (tag)
+                        `(tags-todo ,(concat tag "/TODO")
+                          ((org-agenda-overriding-header
+                            ,(concat "Next actions  " tag)))))
+                      (mapcar #'car +gtd-context-tags)))
+            ("r" "Weekly review"
+             ((todo "PROJ"
+                    ((org-agenda-overriding-header "Stalled projects (no TODOs)")
+                     (org-agenda-skip-function #'+org/skip-projects-with-next)))
+              (alltodo ""
+                       ((org-agenda-overriding-header "Inbox to process")
+                        (org-agenda-files
+                         (list ,(expand-file-name "inbox.org" org-directory)))))
+              (todo "WAIT" ((org-agenda-overriding-header "Waiting on")))
+              (alltodo ""
+                       ((org-agenda-overriding-header "Someday / Maybe")
+                        (org-agenda-files
+                         (list ,(expand-file-name "someday.org" org-directory)))))))))
+
+  ;; block a parent/project from DONE until its children are all DONE
+  ;; combine with :ORDERED: (C-c C-x o) so only the first open child is actionable.
+  (setopt org-enforce-todo-dependencies t
+          org-enforce-todo-checkbox-dependencies t
+          ;; GTD contexts: where/how a task can be done, set with C-c C-q
+          org-tag-alist +gtd-context-tags)
+
+  (require 'org-habit)
+
+  (use-package! org-edna
+    :after org
+    :config (org-edna-mode))
+
+  ;; mark projects with no TODOs as stalled
+  (defun +org/skip-projects-with-next ()
+    "Skip the project at point if its subtree already holds a TODO action."
+    (let ((end (save-excursion (org-end-of-subtree t))))
+      (and (save-excursion (re-search-forward "^\\*+ TODO " end t))
+           end)))
+
+  (defun +org/toggle-habit ()
+    "Toggle the habit STYLE on the entry at point."
+    (interactive)
+    (if (equal (org-entry-get nil "STYLE") "habit")
+        (org-delete-property "STYLE")
+      (org-set-property "STYLE" "habit")))
+
+  (defun +org/set-blocker ()
+    "Edit the org-edna BLOCKER of the entry at point."
+    (interactive)
+    (org-set-property "BLOCKER" (read-string "BLOCKER: " (org-entry-get nil "BLOCKER"))))
+
+  (defun +org/set-trigger ()
+    "Edit the org-edna TRIGGER of the entry at point."
+    (interactive)
+    (org-set-property "TRIGGER" (read-string "TRIGGER: " (org-entry-get nil "TRIGGER"))))
+
+  (defun +org/archive-completed ()
+    "Archive every DONE/KILL entry with no unfinished child, across agenda files.
+Finished projects archive whole; a completed step inside an active project
+archives on its own without dragging its open siblings along."
+    (interactive)
+    (dolist (file (org-agenda-files))
+      (with-current-buffer (org-get-agenda-file-buffer file)
+        (org-with-wide-buffer
+         (org-map-entries
+          (lambda ()
+            (when (and (member (org-get-todo-state) org-done-keywords)
+                       (let ((end (save-excursion (org-end-of-subtree t)))
+                             (case-fold-search nil))
+                         (not (save-excursion
+                                (re-search-forward org-not-done-heading-regexp end t)))))
+              (org-archive-subtree)
+              (setq org-map-continue-from (point))))
+          nil 'file))))
+    (org-save-all-org-buffers)
+    (message "Archived completed items."))
+
+  (map! :map org-mode-map
+        :localleader
+        (:prefix "d"
+         :desc "Toggle habit" "h" #'+org/toggle-habit)
+        (:prefix ("D" . "dependencies")
+         :desc "Toggle ordered" "o" #'org-toggle-ordered-property
+         :desc "Set blocker"    "b" #'+org/set-blocker
+         :desc "Set trigger"    "t" #'+org/set-trigger)
+        (:prefix "s"
+         :desc "Archive all done" "D" #'+org/archive-completed))
+  ;; GTD end
+
   ;; use LuaLaTeX for inline LaTeX previews so unicode works
   (unless (assq 'luadvisvg org-preview-latex-process-alist)
     (setopt org-preview-latex-process-alist
