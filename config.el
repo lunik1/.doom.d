@@ -981,6 +981,9 @@ With prefix ARG, cd into `default-directory' instead."
       ("@outside" . ?o) ("@home" . ?h) ("@somewhere" . ?s))
     "Context tags/fast selection key pairs.")
 
+  (defconst +gtd-directory (expand-file-name "gtd/" org-directory)
+    "Directory under `org-directory' holding the GTD task files.")
+
   (setopt org-log-into-drawer t ; keep log notes out of the body so orgzly renders entries cleanly
           ;; INBX: unclarified capture | TODO: actionable now | WAIT: blocked
           ;; PROJ: multi-step task container | KILL: dropped
@@ -989,15 +992,15 @@ With prefix ARG, cd into `default-directory' instead."
             (sequence "PROJ(p)" "|" "DONE(d!)"))
           ;; only include GTD files in agenda
           org-agenda-files
-          (mapcar (lambda (f) (expand-file-name f org-directory))
+          (mapcar (lambda (f) (expand-file-name f +gtd-directory))
                   '("inbox.org" "projects.org" "next.org" "someday.org" "tickler.org"))
           ;; a task deferred to a future date stays out of the todo lists
           ;; until that date, then reappears (task-until-date deferral)
           org-agenda-todo-ignore-scheduled 'future
           org-capture-templates
-          '(("t" "Task" entry (file "inbox.org")
+          `(("t" "Task" entry (file ,(expand-file-name "inbox.org" +gtd-directory))
              "* INBX %?\n%U" :empty-lines 1)
-            ("n" "Note" entry (file "inbox.org")
+            ("n" "Note" entry (file ,(expand-file-name "inbox.org" +gtd-directory))
              "* %?\n%U" :empty-lines 1))
           ;; refile from the inbox into any heading of an agenda file
           org-refile-targets '((org-agenda-files :maxlevel . 3))
@@ -1010,7 +1013,7 @@ With prefix ARG, cd into `default-directory' instead."
               (tags "LEVEL=1"
                     ((org-agenda-overriding-header "Inbox to process")
                      (org-agenda-files
-                      (list ,(expand-file-name "inbox.org" org-directory)))))
+                      (list ,(expand-file-name "inbox.org" +gtd-directory)))))
               (todo "TODO"
                     ((org-agenda-overriding-header "TODOs")
                      ;; a blocked task is not actionable, so drop it from here
@@ -1019,13 +1022,20 @@ With prefix ARG, cd into `default-directory' instead."
                         (when (org-entry-blocked-p)
                           (or (outline-next-heading) (point-max)))))))
               (todo "WAIT" ((org-agenda-overriding-header "Waiting on")))))
-            ;; one TODO-actions block per context, generated from the tag list
+            ;; one TODO-actions block per context, generated from the tag list,
+            ;; plus a trailing block for TODOs that still lack any context
             ("c" "By context"
-             ,(mapcar (lambda (tag)
-                        `(tags-todo ,(concat tag "/TODO")
-                          ((org-agenda-overriding-header
-                            ,(concat "Next actions  " tag)))))
-                      (mapcar #'car +gtd-context-tags)))
+             ,(append
+               (mapcar (lambda (tag)
+                         `(tags-todo ,(concat tag "/TODO")
+                           ((org-agenda-overriding-header
+                             ,(concat "Next actions  " tag)))))
+                       (mapcar #'car +gtd-context-tags))
+               `((tags-todo
+                  ,(concat (mapconcat (lambda (tag) (concat "-" tag))
+                                      (mapcar #'car +gtd-context-tags) "")
+                           "/TODO")
+                  ((org-agenda-overriding-header "No context"))))))
             ("r" "Weekly review"
              ((todo "PROJ"
                     ((org-agenda-overriding-header "Stalled projects (no TODOs)")
@@ -1033,12 +1043,13 @@ With prefix ARG, cd into `default-directory' instead."
               (tags "LEVEL=1"
                     ((org-agenda-overriding-header "Inbox to process")
                      (org-agenda-files
-                      (list ,(expand-file-name "inbox.org" org-directory)))))
+                      (list ,(expand-file-name "inbox.org" +gtd-directory)))))
               (todo "WAIT" ((org-agenda-overriding-header "Waiting on")))
-              (alltodo ""
-                       ((org-agenda-overriding-header "Someday / Maybe")
-                        (org-agenda-files
-                         (list ,(expand-file-name "someday.org" org-directory)))))))))
+              ;; someday items are keyword-less, so match every top-level entry
+              (tags "LEVEL=1"
+                    ((org-agenda-overriding-header "Someday / Maybe")
+                     (org-agenda-files
+                      (list ,(expand-file-name "someday.org" +gtd-directory)))))))))
 
   ;; block a parent/project from DONE until its children are all DONE
   ;; combine with :ORDERED: (C-c C-x o) so only the first open child is actionable.
@@ -1098,8 +1109,79 @@ archives on its own without dragging its open siblings along."
     (org-save-all-org-buffers)
     (message "Archived completed items."))
 
+  (defun +org/--refile-to-file (file)
+    "Refile the entry at point to the top level of FILE in `+gtd-directory'.
+Explicit target so the review does not prompt again for a destination."
+    (let ((path (expand-file-name file +gtd-directory)))
+      (org-refile nil nil
+                  (list nil path nil
+                        (with-current-buffer (org-get-agenda-file-buffer path)
+                          (point-max))))))
+
+  (defun +org/--next-inbox-item ()
+    "Move point to the next unclarified inbox heading; return non-nil if found.
+Unclarified means still an INBX item or a keyword-less captured note."
+    (goto-char (point-min))
+    (let (found)
+      (while (and (not found) (re-search-forward "^\\* " nil t))
+        (org-back-to-heading t)
+        (if (member (org-get-todo-state) '(nil "INBX"))
+            (setq found t)
+          (org-end-of-subtree t)))
+      found))
+
+  (defun +org/--maybe-deadline ()
+    "Optionally set a deadline on the entry at point; press =n= to skip.
+Deferral to a start date is the tickler's job (see the =later= choice),
+so clarify only offers a due date here."
+    (when (y-or-n-p "Set a deadline? ")
+      (org-deadline nil)))
+
+  (defun +org/clarify-item ()
+    "Clarify the org entry at point and send it to its GTD home.
+Pick what the item is: this sets the keyword, tags a context or sets a
+date where relevant, and refiles it to the matching file (or drops it)."
+    (interactive)
+    (org-back-to-heading t)
+    (org-fold-show-subtree)
+    (pcase (car (read-multiple-choice
+                 (format "Clarify \"%s\"" (org-get-heading t t t t))
+                 '((?t "todo"      "one action -> next.org")
+                   (?w "waiting"   "delegated or blocked -> next.org")
+                   (?p "project"   "multi-step -> projects.org")
+                   (?l "later"     "resurface on a date (tickler)")
+                   (?s "someday"   "maybe one day -> someday.org")
+                   (?d "do-now"    "under 2 min: do it, mark DONE")
+                   (?r "reference" "keep, not actionable -> pick a file")
+                   (?x "trash"     "drop it"))))
+      (?t (org-todo "TODO") (org-set-tags-command) (+org/--maybe-deadline) (+org/--refile-to-file "next.org"))
+      (?w (org-todo "WAIT") (+org/--maybe-deadline) (+org/--refile-to-file "next.org"))
+      (?p (org-todo "PROJ") (+org/--maybe-deadline) (+org/--refile-to-file "projects.org"))
+      (?l (org-todo "TODO") (org-set-tags-command) (org-schedule nil) (+org/--refile-to-file "tickler.org"))
+      (?s (org-todo 'none) (+org/--refile-to-file "someday.org"))
+      (?d (org-todo "DONE"))
+      (?r (org-refile))
+      (?x (org-cut-subtree))))
+
+  (defun +org/review-inbox ()
+    "Step through inbox.org, clarifying each captured item in turn.
+Runs `+org/clarify-item' on every unprocessed entry until the inbox
+holds nothing left to clarify."
+    (interactive)
+    (pop-to-buffer (org-get-agenda-file-buffer
+                    (expand-file-name "inbox.org" +gtd-directory)))
+    (widen)
+    (let ((clarified 0))
+      (while (+org/--next-inbox-item)
+        (recenter 0)
+        (+org/clarify-item)
+        (setq clarified (1+ clarified)))
+      (message "Inbox %s." (if (zerop clarified) "already empty" "processed"))))
+
   (map! :map org-mode-map
         :localleader
+        :desc "Clarify item" "C" #'+org/clarify-item
+        :desc "Review inbox" "R" #'+org/review-inbox
         (:prefix "d"
          :desc "Toggle habit" "h" #'+org/toggle-habit)
         (:prefix ("D" . "dependencies")
