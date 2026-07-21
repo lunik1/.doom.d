@@ -1021,13 +1021,7 @@ With prefix ARG, cd into `default-directory' instead."
                     ((org-agenda-overriding-header "Inbox to process")
                      (org-agenda-files
                       (list ,(expand-file-name "inbox.org" +gtd-directory)))))
-              (todo "TODO"
-                    ((org-agenda-overriding-header "TODOs")
-                     ;; a blocked task is not actionable, so drop it from here
-                     (org-agenda-skip-function
-                      (lambda ()
-                        (when (org-entry-blocked-p)
-                          (or (outline-next-heading) (point-max)))))))
+              (todo "TODO" ((org-agenda-overriding-header "TODOs")))
               (todo "WAIT" ((org-agenda-overriding-header "Waiting on")))))
             ;; one TODO-actions block per context, generated from the tag list,
             ;; plus a trailing block for TODOs that still lack any context
@@ -1062,6 +1056,8 @@ With prefix ARG, cd into `default-directory' instead."
   ;; combine with :ORDERED: (C-c C-x o) so only the first open child is actionable.
   (setopt org-enforce-todo-dependencies t
           org-enforce-todo-checkbox-dependencies t
+          ;; a blocked task is not actionable, so hide it from every agenda view
+          org-agenda-dim-blocked-tasks 'invisible
           ;; GTD contexts: where/how a task can be done, set with C-c C-q
           org-tag-alist +gtd-context-tags)
 
