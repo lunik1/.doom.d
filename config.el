@@ -997,6 +997,13 @@ With prefix ARG, cd into `default-directory' instead."
           ;; a task deferred to a future date stays out of the todo lists
           ;; until that date, then reappears (task-until-date deferral)
           org-agenda-todo-ignore-scheduled 'future
+          ;; show a task's child's parent path
+          org-agenda-prefix-format
+          '((agenda . " %i %-12:c%?-12t% s")
+            (todo   . " %i %b")
+            (tags   . " %i %b")
+            (search . " %i %-12:c"))
+          org-agenda-breadcrumbs-separator "  ›  "
           org-capture-templates
           `(("t" "Task" entry (file ,(expand-file-name "inbox.org" +gtd-directory))
              "* INBX %?\n%U" :empty-lines 1)
