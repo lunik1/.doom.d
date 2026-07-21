@@ -1004,6 +1004,12 @@ With prefix ARG, cd into `default-directory' instead."
             (tags   . " %i %b")
             (search . " %i %-12:c"))
           org-agenda-breadcrumbs-separator "  ›  "
+          ;; float dated tasks to the top
+          org-agenda-sorting-strategy
+          '((agenda habit-down time-up priority-down category-keep)
+            (todo   deadline-up priority-down category-keep)
+            (tags   deadline-up priority-down category-keep)
+            (search category-keep))
           org-capture-templates
           `(("t" "Task" entry (file ,(expand-file-name "inbox.org" +gtd-directory))
              "* INBX %?\n%U" :empty-lines 1)
