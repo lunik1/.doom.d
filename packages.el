@@ -57,6 +57,7 @@
 (package! magit-delta) ; https://tecosaur.github.io/emacs-config/config.html#magit
 (package! org-edna)
 (package! org-fragtog)
+(package! org-super-agenda)
 (package! org-pandoc-import
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"

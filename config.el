@@ -1023,12 +1023,12 @@ With prefix ARG, cd into `default-directory' instead."
           org-agenda-custom-commands
           `(("g" "GTD dashboard"
              ((agenda "" ((org-agenda-span 'day)))
-              (tags "LEVEL=1"
-                    ((org-agenda-overriding-header "Inbox to process")
-                     (org-agenda-files
-                      (list ,(expand-file-name "inbox.org" +gtd-directory)))))
-              (todo "TODO" ((org-agenda-overriding-header "TODOs")))
-              (todo "WAIT" ((org-agenda-overriding-header "Waiting on")))))
+              (todo "" ((org-agenda-overriding-header "")
+                        (org-super-agenda-groups
+                         '((:discard (:todo "PROJ"))
+                           (:name "Inbox to process" :todo "INBX")
+                           (:name "Waiting on" :todo "WAIT")
+                           (:auto-tags t)))))))
             ;; one TODO-actions block per context, generated from the tag list,
             ;; plus a trailing block for TODOs that still lack any context
             ("c" "By context"
@@ -1072,6 +1072,10 @@ With prefix ARG, cd into `default-directory' instead."
   (use-package! org-edna
     :after org
     :config (org-edna-mode))
+
+  (use-package! org-super-agenda
+    :after org-agenda
+    :config (org-super-agenda-mode))
 
   ;; mark projects with no TODOs as stalled
   (defun +org/skip-projects-with-next ()
