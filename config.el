@@ -979,7 +979,11 @@ With prefix ARG, cd into `default-directory' instead."
   (defconst +gtd-context-tags
     '(("@anywhere" . ?a) ("@work" . ?w) ("@computer" . ?c)
       ("@outside" . ?o) ("@home" . ?h) ("@somewhere" . ?s))
-    "Context tags/fast selection key pairs.")
+    "Place-context tags/fast selection key pairs: where a task can be done.")
+
+  (defconst +gtd-time-tags
+    '(("%weekend" . ?e) ("%business_hours" . ?b))
+    "Time-window tags/fast selection key pairs: when a task can be done.")
 
   (defconst +gtd-directory (expand-file-name "gtd/" org-directory)
     "Directory under `org-directory' holding the GTD task files.")
@@ -1064,8 +1068,9 @@ With prefix ARG, cd into `default-directory' instead."
           org-enforce-todo-checkbox-dependencies t
           ;; a blocked task is not actionable, so hide it from every agenda view
           org-agenda-dim-blocked-tasks 'invisible
-          ;; GTD contexts: where/how a task can be done, set with C-c C-q
-          org-tag-alist +gtd-context-tags)
+          ;; GTD contexts: where/how (place) and when (time) a task can be done,
+          ;; set with C-c C-q; the two axes sit in separate rows of the menu
+          org-tag-alist (append +gtd-context-tags '((:newline)) +gtd-time-tags))
 
   (require 'org-habit)
 
