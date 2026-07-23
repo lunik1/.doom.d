@@ -1139,6 +1139,16 @@ holds nothing left to clarify."
         (setq clarified (1+ clarified)))
       (message "Inbox %s." (if (zerop clarified) "already empty" "processed"))))
 
+  (defun +org/agenda-clarify-item ()
+    (interactive)
+    (org-agenda-with-point-at-orig-entry nil (+org/clarify-item))
+    (org-agenda-redo))
+
+  (map! :map org-agenda-mode-map
+        :localleader
+        :desc "Clarify item" "C" #'+org/agenda-clarify-item
+        :desc "Review inbox" "R" #'+org/review-inbox)
+
   (map! :map org-mode-map
         :localleader
         :desc "Clarify item" "C" #'+org/clarify-item
