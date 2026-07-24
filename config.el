@@ -977,6 +977,9 @@ correctly indent the new opening bracket."
 
   (require 'org-habit)
 
+  (setopt org-habit-completed-glyph ?●
+          org-habit-today-glyph     ?◎)
+
   (use-package! org-edna
     :after org
     :config (org-edna-mode))
