@@ -1369,6 +1369,9 @@ holds nothing left to clarify."
       (+dirvish-apply-guide-stipple)
       (add-hook 'after-make-frame-functions #'+dirvish-apply-guide-stipple))))
 
+(after! dirvish-side
+  (dirvish-side-follow-mode 1))
+
 
 
 ;;; Projectile
