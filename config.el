@@ -1099,12 +1099,14 @@ so clarify only offers a due date here."
 Shows the subtree alone in its own window; finish with =C-c C-c= or
 discard with =C-c C-k=, then clarifying resumes."
     (org-back-to-heading t)
-    (let ((config (current-window-configuration))
+    (let ((beg (point))
+          (config (current-window-configuration))
           (buf (org-get-indirect-buffer)))
       (pop-to-buffer buf)
-      (org-back-to-heading t)
+      (goto-char beg)
       (org-narrow-to-subtree)
       (org-fold-show-subtree)
+      (font-lock-ensure)
       (setq +org--recapture-snapshot (buffer-string)
             +org--recapture-window-config config)
       (goto-char (point-min))
