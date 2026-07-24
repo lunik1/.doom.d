@@ -926,7 +926,8 @@ correctly indent the new opening bracket."
           org-refile-allow-creating-parent-nodes 'confirm
           org-agenda-custom-commands
           `(("g" "GTD dashboard"
-             ((agenda "" ((org-agenda-span 'day)))
+             ((agenda "" ((org-agenda-span 'day)
+                          (org-agenda-start-day nil)))
               (todo "" ((org-agenda-overriding-header "")
                         (org-agenda-skip-function #'+org/skip-blocked)
                         (org-super-agenda-groups
