@@ -1183,7 +1183,8 @@ Choose =edit= to rewrite the item capture-style, then pick again."
         (?s (org-todo 'none) (+org/--refile-to-file "someday.org"))
         (?d (org-todo "DONE"))
         (?r (org-refile))
-        (?x (org-cut-subtree)))))
+        (?x (org-cut-subtree))))
+    (org-save-all-org-buffers))
 
   (defun +org/review-inbox ()
     "Step through inbox.org, clarifying each captured item in turn.
