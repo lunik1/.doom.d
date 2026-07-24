@@ -1098,31 +1098,92 @@ so clarify only offers a due date here."
     (when (y-or-n-p "Set a deadline? ")
       (org-deadline nil)))
 
+  (defvar-local +org--recapture-snapshot nil
+    "Subtree text captured before a recapture, restored if it is aborted.")
+
+  (defvar-local +org--recapture-window-config nil
+    "Window configuration to restore when a recapture buffer closes.")
+
+  (defun +org/recapture-finish ()
+    "Keep the recapture edits, close the buffer and resume clarifying."
+    (interactive)
+    ;; edits live in the shared base buffer, so killing the indirect one keeps them
+    (let ((config +org--recapture-window-config))
+      (kill-buffer)
+      (set-window-configuration config)
+      (exit-recursive-edit)))
+
+  (defun +org/recapture-abort ()
+    "Discard the recapture edits, close the buffer and resume clarifying."
+    (interactive)
+    (let ((config +org--recapture-window-config)
+          (snapshot +org--recapture-snapshot))
+      ;; buffer is narrowed to the subtree, so this swaps back just this entry
+      (delete-region (point-min) (point-max))
+      (insert snapshot)
+      (kill-buffer)
+      (set-window-configuration config)
+      (exit-recursive-edit)))
+
+  (define-minor-mode +org-recapture-mode
+    "Capture-style finish/abort keys while re-editing a clarified item."
+    :keymap (let ((map (make-sparse-keymap)))
+              (define-key map (kbd "C-c C-c") #'+org/recapture-finish)
+              (define-key map (kbd "C-c C-k") #'+org/recapture-abort)
+              map))
+
+  (defun +org/--recapture ()
+    "Re-edit the entry at point in a capture-style indirect buffer.
+Shows the subtree alone in its own window; finish with =C-c C-c= or
+discard with =C-c C-k=, then clarifying resumes."
+    (org-back-to-heading t)
+    (let ((config (current-window-configuration))
+          (buf (org-get-indirect-buffer)))
+      (pop-to-buffer buf)
+      (org-back-to-heading t)
+      (org-narrow-to-subtree)
+      (org-fold-show-subtree)
+      (setq +org--recapture-snapshot (buffer-string)
+            +org--recapture-window-config config)
+      (goto-char (point-min))
+      (end-of-line)
+      (+org-recapture-mode 1)
+      (setq-local header-line-format "Re-edit  ·  C-c C-c finish  ·  C-c C-k discard")
+      (recursive-edit)))
+
   (defun +org/clarify-item ()
     "Clarify the org entry at point and send it to its GTD home.
 Pick what the item is: this sets the keyword, tags a context or sets a
-date where relevant, and refiles it to the matching file (or drops it)."
+date where relevant, and refiles it to the matching file (or drops it).
+Choose =edit= to rewrite the item capture-style, then pick again."
     (interactive)
-    (org-back-to-heading t)
     (org-fold-show-subtree)
-    (pcase (car (read-multiple-choice
-                 (format "Clarify \"%s\"" (org-get-heading t t t t))
-                 '((?t "todo"      "one action -> next.org")
-                   (?w "waiting"   "delegated or blocked -> next.org")
-                   (?p "project"   "multi-step -> projects.org")
-                   (?l "later"     "resurface on a date (tickler)")
-                   (?s "someday"   "maybe one day -> someday.org")
-                   (?d "do-now"    "under 2 min: do it, mark DONE")
-                   (?r "reference" "keep, not actionable -> pick a file")
-                   (?x "trash"     "drop it"))))
-      (?t (org-todo "TODO") (org-set-tags-command) (+org/--maybe-deadline) (+org/--refile-to-file "next.org"))
-      (?w (org-todo "WAIT") (+org/--maybe-deadline) (+org/--refile-to-file "next.org"))
-      (?p (org-todo "PROJ") (+org/--maybe-deadline) (+org/--refile-to-file "projects.org"))
-      (?l (org-todo "TODO") (org-set-tags-command) (org-schedule nil) (+org/--refile-to-file "tickler.org"))
-      (?s (org-todo 'none) (+org/--refile-to-file "someday.org"))
-      (?d (org-todo "DONE"))
-      (?r (org-refile))
-      (?x (org-cut-subtree))))
+    (let (choice)
+      ;; edit loops back to the menu; every other choice files the item once
+      (while (eq ?e (setq choice
+                          (progn
+                            (org-back-to-heading t)
+                            (car (read-multiple-choice
+                                  (format "Clarify \"%s\"" (org-get-heading t t t t))
+                                  '((?t "todo"      "one action -> next.org")
+                                    (?w "waiting"   "delegated or blocked -> next.org")
+                                    (?p "project"   "multi-step -> projects.org")
+                                    (?l "later"     "resurface on a date (tickler)")
+                                    (?s "someday"   "maybe one day -> someday.org")
+                                    (?d "do-now"    "under 2 min: do it, mark DONE")
+                                    (?r "reference" "keep, not actionable -> pick a file")
+                                    (?e "edit"      "rewrite title/body, then re-pick")
+                                    (?x "trash"     "drop it")))))))
+        (+org/--recapture))
+      (pcase choice
+        (?t (org-todo "TODO") (org-set-tags-command) (+org/--maybe-deadline) (+org/--refile-to-file "next.org"))
+        (?w (org-todo "WAIT") (+org/--maybe-deadline) (+org/--refile-to-file "next.org"))
+        (?p (org-todo "PROJ") (+org/--maybe-deadline) (+org/--refile-to-file "projects.org"))
+        (?l (org-todo "TODO") (org-set-tags-command) (org-schedule nil) (+org/--refile-to-file "tickler.org"))
+        (?s (org-todo 'none) (+org/--refile-to-file "someday.org"))
+        (?d (org-todo "DONE"))
+        (?r (org-refile))
+        (?x (org-cut-subtree)))))
 
   (defun +org/review-inbox ()
     "Step through inbox.org, clarifying each captured item in turn.
