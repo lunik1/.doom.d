@@ -77,11 +77,6 @@
 
 (package! jinja2-mode)
 
-(package! eglot-booster
-  :recipe (:host github
-           :repo "jdtsmith/eglot-booster"
-           :files ("*.el")))
-
 (unpin! lsp-pyright)
 
 (package! typst-ts-mode :recipe (:host nil :repo "https://git.sr.ht/~meow_king/typst-ts-mode"))
