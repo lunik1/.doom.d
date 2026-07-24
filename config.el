@@ -928,6 +928,7 @@ correctly indent the new opening bracket."
           `(("g" "GTD dashboard"
              ((agenda "" ((org-agenda-span 'day)))
               (todo "" ((org-agenda-overriding-header "")
+                        (org-agenda-skip-function #'+org/skip-blocked)
                         (org-super-agenda-groups
                          '((:discard (:todo "PROJ"))
                            (:name "Inbox to process" :todo "INBX")
@@ -981,6 +982,12 @@ correctly indent the new opening bracket."
   (use-package! org-super-agenda
     :after org-agenda
     :config (org-super-agenda-mode))
+
+  (defun +org/skip-blocked ()
+    "Skip the entry at point if it is blocked by a dependency or org-edna.
+Skips the heading only, so an actionable child of a blocked parent stays."
+    (when (org-entry-blocked-p)
+      (or (outline-next-heading) (point-max))))
 
   ;; mark projects with no TODOs as stalled
   (defun +org/skip-projects-with-next ()
