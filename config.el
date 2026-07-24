@@ -1030,11 +1030,7 @@ archives on its own without dragging its open siblings along."
   (defun +org/--refile-to-file (file)
     "Refile the entry at point to the top level of FILE in `+gtd-directory'.
 Explicit target so the review does not prompt again for a destination."
-    (let ((path (expand-file-name file +gtd-directory)))
-      (org-refile nil nil
-                  (list nil path nil
-                        (with-current-buffer (org-get-agenda-file-buffer path)
-                          (point-max))))))
+    (org-refile nil nil (list nil (expand-file-name file +gtd-directory) nil nil)))
 
   (defun +org/--next-inbox-item ()
     "Move point to the next unclarified inbox heading; return non-nil if found.
