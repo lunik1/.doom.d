@@ -908,6 +908,7 @@ correctly indent the new opening bracket."
             (tags   . " %i %b")
             (search . " %i %-12:c"))
           org-agenda-breadcrumbs-separator "  ›  "
+          org-agenda-block-separator ?─
           ;; float dated tasks to the top
           org-agenda-sorting-strategy
           '((agenda habit-down time-up priority-down category-keep)
