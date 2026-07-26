@@ -897,7 +897,7 @@ correctly indent the new opening bracket."
           ;; only include GTD files in agenda
           org-agenda-files
           (mapcar (lambda (f) (expand-file-name f +gtd-directory))
-                  '("inbox.org" "projects.org" "next.org" "someday.org" "tickler.org"))
+                  '("inbox.org" "projects.org" "actions.org" "someday.org"))
           ;; a task deferred to a future date stays out of the todo lists
           ;; until that date, then reappears (task-until-date deferral)
           org-agenda-todo-ignore-scheduled 'future
@@ -950,6 +950,12 @@ correctly indent the new opening bracket."
                                       (mapcar #'car +gtd-context-tags) "")
                            "/TODO")
                   ((org-agenda-overriding-header "No context"))))))
+            ;; every dated item over the next month: the deferred landscape
+            ("u" "Upcoming"
+             ((agenda "" ((org-agenda-overriding-header "Upcoming")
+                          (org-agenda-span 'month)
+                          (org-agenda-start-day nil)
+                          (org-agenda-start-on-weekday nil)))))
             ("r" "Weekly review"
              ((tags "LEVEL=1"
                     ((org-agenda-overriding-header "Inbox to process")
@@ -957,6 +963,11 @@ correctly indent the new opening bracket."
                      (org-agenda-files
                       (list ,(expand-file-name "inbox.org" +gtd-directory)))))
               (todo "WAIT" ((org-agenda-overriding-header "Waiting on")))
+              ;; the dated landscape: reviews deferred (scheduled) items now
+              ;; that there is no tickler file to eyeball
+              (agenda "" ((org-agenda-overriding-header "Coming up")
+                          (org-agenda-span 14)
+                          (org-agenda-start-on-weekday nil)))
               (todo "PROJ"
                     ((org-agenda-overriding-header "Stalled projects (no TODOs)")
                      (org-agenda-skip-function #'+org/skip-projects-with-next)))
@@ -1058,12 +1069,26 @@ Unclarified means still an INBX item or a keyword-less captured note."
           (org-end-of-subtree t)))
       found))
 
-  (defun +org/--maybe-deadline ()
-    "Optionally set a deadline on the entry at point; press =n= to skip.
-Deferral to a start date is the tickler's job (see the =later= choice),
-so clarify only offers a due date here."
-    (when (y-or-n-p "Set a deadline? ")
-      (org-deadline nil)))
+  (defun +org/--maybe-date ()
+    "Optionally date the action at point; press =n= to leave it undated.
+Schedule defers the action until a start date (the tickler behaviour);
+deadline marks when it must be finished."
+    (pcase (car (read-multiple-choice
+                 "Date?"
+                 '((?n "none"     "leave undated")
+                   (?s "schedule" "defer until / start on a date (tickler)")
+                   (?d "deadline" "must be finished by a date"))))
+      (?s (org-schedule nil))
+      (?d (org-deadline nil))))
+
+  (defun +org/--file-action ()
+    "File the action at point: standalone in actions.org, or under a project.
+Only =PROJ= headings are offered as parents: a heading with actions under
+it is by definition a project, so nothing else should host subtasks."
+    (if (y-or-n-p "File under a project? ")
+        (let ((org-refile-targets '((org-agenda-files :todo . "PROJ"))))
+          (org-refile))
+      (+org/--refile-to-file "actions.org")))
 
   (defvar-local +org--recapture-snapshot nil
     "Subtree text captured before a recapture, restored if it is aborted.")
@@ -1134,24 +1159,20 @@ Choose =edit= to rewrite the item capture-style, then pick again."
                             (org-back-to-heading t)
                             (car (read-multiple-choice
                                   (format "Clarify \"%s\"" (org-get-heading t t t t))
-                                  '((?t "todo"      "one action -> next.org")
-                                    (?w "waiting"   "delegated or blocked -> next.org")
-                                    (?p "project"   "multi-step -> projects.org")
-                                    (?l "later"     "resurface on a date (tickler)")
-                                    (?s "someday"   "maybe one day -> someday.org")
-                                    (?d "do-now"    "under 2 min: do it, mark DONE")
-                                    (?r "reference" "keep, not actionable -> pick a file")
-                                    (?e "edit"      "rewrite title/body, then re-pick")
-                                    (?x "trash"     "drop it")))))))
+                                  '((?t "todo"    "a single action -> actions.org or a project")
+                                    (?w "waiting"  "delegated or blocked, shows in Waiting on")
+                                    (?p "project"  "multi-step outcome -> projects.org")
+                                    (?s "someday"  "maybe one day -> someday.org")
+                                    (?d "do-now"   "under 2 min: do it, mark DONE")
+                                    (?e "edit"     "rewrite title/body, then re-pick")
+                                    (?x "trash"    "drop it")))))))
         (+org/--recapture))
       (pcase choice
-        (?t (org-todo "TODO") (org-set-tags-command) (+org/--maybe-deadline) (+org/--refile-to-file "next.org"))
-        (?w (org-todo "WAIT") (+org/--maybe-deadline) (+org/--refile-to-file "next.org"))
-        (?p (org-todo "PROJ") (+org/--maybe-deadline) (+org/--refile-to-file "projects.org"))
-        (?l (org-todo "TODO") (org-set-tags-command) (org-schedule nil) (+org/--refile-to-file "tickler.org"))
+        (?t (org-todo "TODO") (org-set-tags-command) (+org/--maybe-date) (+org/--file-action))
+        (?w (org-todo "WAIT") (+org/--maybe-date) (+org/--file-action))
+        (?p (org-todo "PROJ") (+org/--maybe-date) (+org/--refile-to-file "projects.org"))
         (?s (org-todo 'none) (+org/--refile-to-file "someday.org"))
         (?d (org-todo "DONE"))
-        (?r (org-refile))
         (?x (org-cut-subtree))))
     (org-save-all-org-buffers))
 
