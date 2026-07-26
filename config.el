@@ -897,7 +897,7 @@ correctly indent the new opening bracket."
           ;; only include GTD files in agenda
           org-agenda-files
           (mapcar (lambda (f) (expand-file-name f +gtd-directory))
-                  '("inbox.org" "projects.org" "actions.org" "someday.org"))
+                  '("inbox.org" "active.org" "someday.org"))
           ;; a task deferred to a future date stays out of the todo lists
           ;; until that date, then reappears (task-until-date deferral)
           org-agenda-todo-ignore-scheduled 'future
@@ -950,6 +950,8 @@ correctly indent the new opening bracket."
                                       (mapcar #'car +gtd-context-tags) "")
                            "/TODO")
                   ((org-agenda-overriding-header "No context"))))))
+            ("p" "Projects"
+             ((todo "PROJ" ((org-agenda-overriding-header "Projects")))))
             ;; every dated item over the next month: the deferred landscape
             ("u" "Upcoming"
              ((agenda "" ((org-agenda-overriding-header "Upcoming")
@@ -1082,13 +1084,13 @@ deadline marks when it must be finished."
       (?d (org-deadline nil))))
 
   (defun +org/--file-action ()
-    "File the action at point: standalone in actions.org, or under a project.
+    "File the action at point: standalone in active.org, or under a project.
 Only =PROJ= headings are offered as parents: a heading with actions under
 it is by definition a project, so nothing else should host subtasks."
     (if (y-or-n-p "File under a project? ")
         (let ((org-refile-targets '((org-agenda-files :todo . "PROJ"))))
           (org-refile))
-      (+org/--refile-to-file "actions.org")))
+      (+org/--refile-to-file "active.org")))
 
   (defvar-local +org--recapture-snapshot nil
     "Subtree text captured before a recapture, restored if it is aborted.")
@@ -1159,9 +1161,9 @@ Choose =edit= to rewrite the item capture-style, then pick again."
                             (org-back-to-heading t)
                             (car (read-multiple-choice
                                   (format "Clarify \"%s\"" (org-get-heading t t t t))
-                                  '((?t "todo"    "a single action -> actions.org or a project")
+                                  '((?t "todo"    "a single action -> active.org or a project")
                                     (?w "waiting"  "delegated or blocked, shows in Waiting on")
-                                    (?p "project"  "multi-step outcome -> projects.org")
+                                    (?p "project"  "multi-step outcome -> active.org")
                                     (?s "someday"  "maybe one day -> someday.org")
                                     (?d "do-now"   "under 2 min: do it, mark DONE")
                                     (?e "edit"     "rewrite title/body, then re-pick")
@@ -1170,7 +1172,7 @@ Choose =edit= to rewrite the item capture-style, then pick again."
       (pcase choice
         (?t (org-todo "TODO") (org-set-tags-command) (+org/--maybe-date) (+org/--file-action))
         (?w (org-todo "WAIT") (+org/--maybe-date) (+org/--file-action))
-        (?p (org-todo "PROJ") (+org/--maybe-date) (+org/--refile-to-file "projects.org"))
+        (?p (org-todo "PROJ") (+org/--maybe-date) (+org/--refile-to-file "active.org"))
         (?s (org-todo 'none) (+org/--refile-to-file "someday.org"))
         (?d (org-todo "DONE"))
         (?x (org-cut-subtree))))
