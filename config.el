@@ -997,9 +997,10 @@ Skips the heading only, so an actionable child of a blocked parent stays."
 
   ;; mark projects with no TODOs as stalled
   (defun +org/skip-projects-with-next ()
-    "Skip the project at point if its subtree already holds a TODO action."
+    "Skip the project at point if its subtree already holds an action.
+A TODO is a next action; a WAIT is delegated, so neither counts as stalled."
     (let ((end (save-excursion (org-end-of-subtree t))))
-      (and (save-excursion (re-search-forward "^\\*+ TODO " end t))
+      (and (save-excursion (re-search-forward "^\\*+ \\(?:TODO\\|WAIT\\) " end t))
            end)))
 
   (defun +org/toggle-habit ()
