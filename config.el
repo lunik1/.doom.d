@@ -894,6 +894,7 @@ correctly indent the new opening bracket."
           org-todo-keywords
           '((sequence "INBX(i)" "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "KILL(k@)")
             (sequence "PROJ(p)" "|" "DONE(d!)"))
+          org-todo-repeat-to-state "TODO"
           ;; only include GTD files in agenda
           org-agenda-files
           (mapcar (lambda (f) (expand-file-name f +gtd-directory))
