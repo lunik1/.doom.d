@@ -951,7 +951,8 @@ correctly indent the new opening bracket."
                            "/TODO")
                   ((org-agenda-overriding-header "No context"))))))
             ("p" "Projects"
-             ((todo "PROJ" ((org-agenda-overriding-header "Projects")))))
+             ((todo "PROJ" ((org-agenda-overriding-header "Projects")
+                            (org-agenda-dim-blocked-tasks nil)))))
             ;; every dated item over the next month: the deferred landscape
             ("u" "Upcoming"
              ((agenda "" ((org-agenda-overriding-header "Upcoming")
