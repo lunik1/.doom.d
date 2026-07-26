@@ -931,11 +931,13 @@ correctly indent the new opening bracket."
                           (org-agenda-start-day nil)))
               (todo "" ((org-agenda-overriding-header "")
                         (org-agenda-skip-function #'+org/skip-blocked)
+                        (org-super-agenda-unmatched-name "No context")
                         (org-super-agenda-groups
                          '((:discard (:todo "PROJ"))
                            (:name "Inbox to process" :todo "INBX")
                            (:name "Waiting on" :todo "WAIT")
-                           (:auto-tags t)))))))
+                           ,@(mapcar (lambda (tag) (list :name tag :tag tag))
+                                     (mapcar #'car +gtd-context-tags))))))))
             ;; one TODO-actions block per context, generated from the tag list,
             ;; plus a trailing block for TODOs that still lack any context
             ("c" "By context"
