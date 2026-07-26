@@ -955,12 +955,12 @@ correctly indent the new opening bracket."
             ("p" "Projects"
              ((todo "PROJ" ((org-agenda-overriding-header "Projects")
                             (org-agenda-dim-blocked-tasks nil)))))
-            ;; every dated item over the next month: the deferred landscape
             ("u" "Upcoming"
-             ((agenda "" ((org-agenda-overriding-header "Upcoming")
-                          (org-agenda-span 'month)
-                          (org-agenda-start-day nil)
-                          (org-agenda-start-on-weekday nil)))))
+             ((todo "" ((org-agenda-overriding-header "Upcoming")
+                        (org-agenda-todo-ignore-scheduled nil)
+                        (org-agenda-skip-function #'+org/skip-unless-future-scheduled)
+                        (org-agenda-sorting-strategy '(scheduled-up))
+                        (org-agenda-prefix-format '((todo . " %-16(+org/upcoming-when)")))))))
             ("r" "Weekly review"
              ((tags "LEVEL=1"
                     ((org-agenda-overriding-header "Inbox to process")
