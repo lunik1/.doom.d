@@ -1020,6 +1020,23 @@ A TODO is a next action; a WAIT is delegated, so neither counts as stalled."
       (and (save-excursion (re-search-forward "^\\*+ \\(?:TODO\\|WAIT\\) " end t))
            end)))
 
+  ;; drive the Upcoming view: keep only future deferrals, and show their date
+  (defun +org/skip-unless-future-scheduled ()
+    "Skip the entry at point unless it is SCHEDULED after today.
+Repeaters report their base date, so recurring items are left out; they
+already recur in the daily agenda."
+    (let ((scheduled (org-get-scheduled-time (point))))
+      (unless (and scheduled
+                   (> (time-to-days scheduled) (time-to-days (current-time))))
+        (or (outline-next-heading) (point-max)))))
+
+  (defun +org/upcoming-when ()
+    "Return the entry's scheduled date as a short string, else empty.
+Used as the Upcoming view's prefix so each deferral shows its date."
+    (if-let ((scheduled (org-get-scheduled-time (point))))
+        (format-time-string "%Y-%m-%d %a" scheduled)
+      ""))
+
   (defun +org/toggle-habit ()
     "Toggle the habit STYLE on the entry at point."
     (interactive)
