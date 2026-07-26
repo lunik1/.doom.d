@@ -956,6 +956,7 @@ correctly indent the new opening bracket."
                      (org-agenda-skip-function #'+org/skip-projects-with-next)))
               (tags "LEVEL=1"
                     ((org-agenda-overriding-header "Inbox to process")
+                     (org-agenda-skip-function '(org-agenda-skip-entry-if 'done))
                      (org-agenda-files
                       (list ,(expand-file-name "inbox.org" +gtd-directory)))))
               (todo "WAIT" ((org-agenda-overriding-header "Waiting on")))
