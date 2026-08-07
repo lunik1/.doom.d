@@ -997,6 +997,26 @@ correctly indent the new opening bracket."
   ;; whole file scrolled to a timestamp
   (add-hook 'org-agenda-after-show-hook #'org-narrow-to-subtree)
 
+  (defun +org/save-all-org-buffers (&rest _)
+    "Persist every modified org buffer, ignoring any arguments.
+An agenda edit changes only the buffer, so the file on disk (and anything
+syncing it, such as orgzly) never sees it. The =&rest= makes this usable as
+:after advice on commands with differing arglists."
+    (org-save-all-org-buffers))
+
+  ;; persist edits made from the agenda, which otherwise stay in the buffer
+  (dolist (cmd '(org-agenda-todo
+                 org-agenda-priority org-agenda-priority-up org-agenda-priority-down
+                 org-agenda-set-tags org-agenda-set-property org-agenda-set-effort
+                 org-agenda-schedule org-agenda-deadline
+                 org-agenda-date-later org-agenda-date-earlier
+                 org-agenda-refile org-agenda-kill org-agenda-add-note
+                 org-agenda-archive org-agenda-archive-default
+                 org-agenda-archive-to-archive-sibling org-agenda-toggle-archive-tag
+                 org-agenda-bulk-action))
+    (when (fboundp cmd)
+      (advice-add cmd :after #'+org/save-all-org-buffers)))
+
   (require 'org-habit)
 
   (setopt org-habit-completed-glyph ?●
