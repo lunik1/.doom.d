@@ -993,6 +993,10 @@ correctly indent the new opening bracket."
           ;; set with C-c C-q; the two axes sit in separate rows of the menu
           org-tag-alist (append +gtd-context-tags '((:newline)) +gtd-time-tags))
 
+  ;; jumping to an entry from the agenda shows its subtree alone, not the
+  ;; whole file scrolled to a timestamp
+  (add-hook 'org-agenda-after-show-hook #'org-narrow-to-subtree)
+
   (require 'org-habit)
 
   (setopt org-habit-completed-glyph ?●
