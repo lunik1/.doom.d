@@ -1048,15 +1048,54 @@ Used as the Upcoming view's prefix so each deferral shows its date."
         (org-delete-property "STYLE")
       (org-set-property "STYLE" "habit")))
 
+  (defun +org/--edna-candidates ()
+    "Alist of candidate org-edna target tasks to their markers.
+Covers every not-done task in active.org and every heading in someday.org."
+    (let ((label (lambda ()
+                   (cons (org-format-outline-path (org-get-outline-path t t))
+                         (point-marker)))))
+      (append (org-map-entries
+               label "/!" (list (expand-file-name "active.org" +gtd-directory)))
+              (org-map-entries
+               label t (list (expand-file-name "someday.org" +gtd-directory))))))
+
   (defun +org/set-blocker ()
-    "Edit the org-edna BLOCKER of the entry at point."
+    "Block the entry at point on a task chosen by completion.
+Adds an org-edna =ids()= BLOCKER, leaving the task blocked until the chosen
+task is done; re-selecting appends to any existing =ids()= blocker."
     (interactive)
-    (org-set-property "BLOCKER" (read-string "BLOCKER: " (org-entry-get nil "BLOCKER"))))
+    (org-back-to-heading t)
+    (let* ((here (point-marker))
+           (candidates (seq-remove (lambda (c) (equal (cdr c) here))
+                                   (+org/--edna-candidates)))
+           (choice (completing-read "Blocked by: " candidates nil t))
+           (id (org-with-point-at (cdr (assoc choice candidates))
+                 (org-id-get-create)))
+           (existing (org-entry-get nil "BLOCKER")))
+      (cond
+       ((null existing)
+        (org-set-property "BLOCKER" (format "ids(%s)" id)))
+       ((string-match "\\`ids(\\([^)]*\\))\\'" existing)
+        (org-set-property "BLOCKER"
+                          (format "ids(%s %s)" (match-string 1 existing) id)))
+       (t (user-error "Existing BLOCKER is not a plain ids() form: %s" existing)))))
 
   (defun +org/set-trigger ()
-    "Edit the org-edna TRIGGER of the entry at point."
+    "Advance another task when the entry at point is marked DONE.
+Pick the target by completion; finishing this task then flips it to TODO.
+Re-selecting appends another target."
     (interactive)
-    (org-set-property "TRIGGER" (read-string "TRIGGER: " (org-entry-get nil "TRIGGER"))))
+    (org-back-to-heading t)
+    (let* ((here (point-marker))
+           (candidates (seq-remove (lambda (c) (equal (cdr c) here))
+                                   (+org/--edna-candidates)))
+           (choice (completing-read "When done, advance: " candidates nil t))
+           (id (org-with-point-at (cdr (assoc choice candidates))
+                 (org-id-get-create)))
+           (clause (format "ids(%s) todo!(TODO)" id))
+           (existing (org-entry-get nil "TRIGGER")))
+      (org-set-property "TRIGGER"
+                        (if existing (format "%s %s" existing clause) clause))))
 
   (defun +org/archive-completed ()
     "Archive every DONE/KILL entry with no unfinished child, across agenda files.
